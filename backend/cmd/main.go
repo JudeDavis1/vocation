@@ -4,8 +4,8 @@ import (
 	"backend/app/middleware"
 	"backend/app/models"
 	"backend/app/routes"
-	"fmt"
 
+	"fmt"
 	"os"
 
 	"github.com/gin-gonic/gin"

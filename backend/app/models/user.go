@@ -17,6 +17,8 @@ type User struct {
 	Email    string
 	UserType UserType
 
+	AnnualLeaveDays int
+
 	CurrentProjects   []Project `gorm:"foreignKey:UserID"`
 	CompletedProjects []Project `gorm:"foreignKey:UserID"`
 }

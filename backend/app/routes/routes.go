@@ -8,6 +8,8 @@ import (
 
 func SetupRoutes(r *gin.Engine) {
 	base := r.Group("/api/v1")
-	// Endpoints here
+
+	/* Endpoints here */
+
 	base.GET("/hello", handlers.Hello)
 }
