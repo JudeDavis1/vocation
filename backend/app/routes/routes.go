@@ -6,11 +6,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func SetupRoutes() *gin.Engine {
-	r := gin.Default()
+func SetupRoutes(r *gin.Engine) {
+	base := r.Group("/api/v1")
 
-	// Endpoints here
-	r.GET("/api/v1/hello", handlers.Hello)
+	/* Endpoints here */
 
-	return r
+	base.GET("/hello", handlers.Hello)
 }

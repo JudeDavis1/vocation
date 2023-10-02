@@ -11,7 +11,8 @@
   # List of search paths
   includes = [
     "cmd/**/*",
-    "app/**/*"
+    "app/**/*",
+    "bin/**/*"
   ]
   delay = 1000 # in milliseconds
 
