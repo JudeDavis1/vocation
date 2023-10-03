@@ -22,7 +22,6 @@ export function MainForm() {
   });
 
   const onSubmit = (data: FormData) => {
-    console.log(data);
     toast({
       title: "Hello",
       description: "Welcome!",

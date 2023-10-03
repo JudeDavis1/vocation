@@ -16,7 +16,7 @@ type User struct {
 	Lastname  string
 
 	Role         string
-	Email        string
+	Email        string `gorm:"unique"`
 	PasswordHash string
 	UserType     UserType
 

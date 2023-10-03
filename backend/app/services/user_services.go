@@ -21,7 +21,17 @@ func CreateUserInDB(dto dtos.CreateUserDTO, db *gorm.DB) (models.User, error) {
 		Email:        dto.Email,
 		PasswordHash: string(passwordHash),
 	}
-	db.Create(&user)
+	result := db.Create(&user)
+	if result.Error != nil {
+		return models.User{}, result.Error
+	}
 
 	return user, nil
+}
+
+func UserExists(email string, db *gorm.DB) bool {
+	var existingUsers int64
+	db.Model(&models.User{}).Where(&models.User{Email: email}).Count(&existingUsers)
+
+	return existingUsers > 0
 }

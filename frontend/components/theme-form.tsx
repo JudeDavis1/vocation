@@ -42,7 +42,7 @@ export function ThemeForm<DataShape extends FieldValues>({
 }: ThemeFormProps<DataShape>) {
   return (
     <div className="flex justify-center">
-      <Card className="p-4 w-full md:w-2/3">
+      <Card className="p-4 w-full md:w-2/3 shadow-2xl shadow-gray-800">
         <CardHeader>
           {title && <CardTitle>{title}</CardTitle>}
           {description && <CardDescription>{description}</CardDescription>}
@@ -50,7 +50,7 @@ export function ThemeForm<DataShape extends FieldValues>({
 
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               {fields.map((item, i) => (
                 <FormField
                   key={i}

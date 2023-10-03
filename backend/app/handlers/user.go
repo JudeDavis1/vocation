@@ -24,6 +24,13 @@ func CreateUser(ctx *gin.Context) {
 		return
 	}
 
+	// Check if a user already exists with the same email
+	userExists := services.UserExists(dto.Email, db)
+	if userExists {
+		ctx.JSON(http.StatusBadRequest, gin.H{"userError": "User with that email already exists!"})
+		return
+	}
+
 	user, err := services.CreateUserInDB(dto, db)
 	if err != nil {
 		ctx.JSON(

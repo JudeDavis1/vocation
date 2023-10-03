@@ -5,38 +5,31 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { ThemeForm } from "@/components/theme-form";
-
-const formSchema = z
-  .object({
-    email: z.string().email("Invalid email").max(52, "Email too long"),
-    password: z
-      .string()
-      .min(8, "Password must be a minimum of 8 characters")
-      .max(53, "Maximum 53 characters!"),
-    retypePassword: z.string(),
-  })
-  .refine((data) => data.password == data.retypePassword, {
-    message: "Passwords must match!",
-    path: ["retypePassword"],
-  });
-type FormData = z.infer<typeof formSchema>;
+import { SignUpFormData, signUpFormSchema } from "@/types/sign-up/form-schema";
+import { submitSignUpData } from "@/services/sign-up/on-submit";
 
 export function MainForm() {
-  const form = useForm<FormData>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<SignUpFormData>({
+    resolver: zodResolver(signUpFormSchema),
   });
-
-  const onSubmit = (data: FormData) => {
-    console.log(data);
-  };
 
   return (
     <ThemeForm
       title="Sign Up"
       description="Welcome to a new start!"
       form={form}
-      onSubmit={onSubmit}
+      onSubmit={submitSignUpData}
       fields={[
+        {
+          label: "First Name",
+          name: "firstName",
+          inputProps: { placeholder: "First name" },
+        },
+        {
+          label: "Last Name",
+          name: "lastName",
+          inputProps: { placeholder: "Last name" },
+        },
         {
           label: "Email",
           name: "email",
