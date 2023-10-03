@@ -1,13 +1,12 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
 import type { Metadata } from "next";
-import { useTheme } from "next-themes";
 
 import { SiteHeader } from "./site-header";
 
 import { ThemeProvider } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
-import { ModeToggle } from "@/components/theme-mode-toggle";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -41,6 +40,7 @@ export default function RootLayout({
             <SiteHeader />
             <div className="flex-1">{children}</div>
             {/* SITE FOOTER */}
+            <Toaster />
           </div>
         </ThemeProvider>
       </body>

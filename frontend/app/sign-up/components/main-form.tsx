@@ -5,7 +5,6 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { ThemeForm } from "@/components/theme-form";
-import { toast } from "@/components/ui/use-toast";
 
 const formSchema = z.object({
   email: z.string().email("Invalid email").max(52, "Email too long"),
@@ -23,31 +22,28 @@ export function MainForm() {
 
   const onSubmit = (data: FormData) => {
     console.log(data);
-    toast({
-      title: "Hello",
-      description: "Welcome!",
-      variant: "success",
-    });
   };
 
   return (
-    <ThemeForm
-      title="Login"
-      description="Welcome back!"
-      form={form}
-      onSubmit={onSubmit}
-      fields={[
-        {
-          label: "Email",
-          name: "email",
-          inputProps: { placeholder: "Email", type: "email" },
-        },
-        {
-          label: "Password",
-          name: "password",
-          inputProps: { placeholder: "Password", type: "password" },
-        },
-      ]}
-    />
+    <div className="">
+      <ThemeForm
+        title="Sign Up"
+        description="Welcome to a new start!"
+        form={form}
+        onSubmit={onSubmit}
+        fields={[
+          {
+            label: "Email",
+            name: "email",
+            inputProps: { placeholder: "Email", type: "email" },
+          },
+          {
+            label: "Password",
+            name: "password",
+            inputProps: { placeholder: "Password", type: "password" },
+          },
+        ]}
+      />
+    </div>
   );
 }
