@@ -12,13 +12,20 @@ const (
 type User struct {
 	gorm.Model
 
-	Name     string
-	Role     string
-	Email    string
-	UserType UserType
+	Firstname string
+	Lastname  string
+
+	Role         string
+	Email        string
+	PasswordHash string
+	UserType     UserType
 
 	AnnualLeaveDays int
 
 	CurrentProjects   []Project `gorm:"foreignKey:UserID"`
 	CompletedProjects []Project `gorm:"foreignKey:UserID"`
+}
+
+func (user *User) FullName() string {
+	return user.Firstname + " " + user.Lastname
 }
