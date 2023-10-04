@@ -1,4 +1,5 @@
 import { FieldValues, Path, UseFormReturn } from "react-hook-form";
+import React from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -18,19 +19,11 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
-interface IFieldProps {
-  label: string;
-  name: string;
-
-  inputProps: React.ComponentProps<typeof Input>;
-}
-
 export interface ThemeFormProps<DataShape extends FieldValues> {
   title?: string;
   description?: string;
   form: UseFormReturn<DataShape>;
   onSubmit: (data: any) => void;
-  fields: IFieldProps[];
 }
 
 export function ThemeForm<DataShape extends FieldValues>({
@@ -38,8 +31,8 @@ export function ThemeForm<DataShape extends FieldValues>({
   description,
   form,
   onSubmit,
-  fields,
-}: ThemeFormProps<DataShape>) {
+  children,
+}: React.PropsWithChildren<ThemeFormProps<DataShape>>) {
   return (
     <div className="flex justify-center">
       <Card className="p-4 w-full md:w-2/3 shadow-2xl shadow-gray-800">
@@ -51,7 +44,8 @@ export function ThemeForm<DataShape extends FieldValues>({
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              {fields.map((item, i) => (
+              {children}
+              {/* {fields.map((item, i) => (
                 <FormField
                   key={i}
                   name={item.name as Path<DataShape>}
@@ -66,7 +60,7 @@ export function ThemeForm<DataShape extends FieldValues>({
                     </FormItem>
                   )}
                 />
-              ))}
+              ))} */}
 
               <Button type="submit" className="flex justify-end ml-auto">
                 Submit

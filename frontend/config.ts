@@ -7,5 +7,6 @@ export class AppSettings {
 export const backendRoutes = {
   user: {
     create: AppSettings.shared.backendURL + "/user/create",
+    login: AppSettings.shared.backendURL + "/user/login",
   },
 };

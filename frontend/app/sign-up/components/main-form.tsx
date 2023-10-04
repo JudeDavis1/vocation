@@ -1,12 +1,19 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { ThemeForm } from "@/components/theme-form";
 import { SignUpFormData, signUpFormSchema } from "@/types/sign-up/form-schema";
 import { submitSignUpData } from "@/services/sign-up/on-submit";
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
 export function MainForm() {
   const form = useForm<SignUpFormData>({
@@ -16,36 +23,79 @@ export function MainForm() {
   return (
     <ThemeForm
       title="Sign Up"
-      description="Welcome to a new start!"
+      description="Can't wait to have you on board!"
       form={form}
       onSubmit={submitSignUpData}
-      fields={[
-        {
-          label: "First Name",
-          name: "firstName",
-          inputProps: { placeholder: "First name" },
-        },
-        {
-          label: "Last Name",
-          name: "lastName",
-          inputProps: { placeholder: "Last name" },
-        },
-        {
-          label: "Email",
-          name: "email",
-          inputProps: { placeholder: "Email", type: "email" },
-        },
-        {
-          label: "Password",
-          name: "password",
-          inputProps: { placeholder: "Password", type: "password" },
-        },
-        {
-          label: "Retype Password",
-          name: "retypePassword",
-          inputProps: { placeholder: "Retype password", type: "password" },
-        },
-      ]}
-    />
+    >
+      <FormField
+        name="firstName"
+        control={form.control}
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>First Name</FormLabel>
+            <FormControl>
+              <Input {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      <FormField
+        name="lastName"
+        control={form.control}
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Last Name</FormLabel>
+            <FormControl>
+              <Input {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      <FormField
+        name="email"
+        control={form.control}
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Email</FormLabel>
+            <FormControl>
+              <Input type="email" {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      <FormField
+        name="password"
+        control={form.control}
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Password</FormLabel>
+            <FormControl>
+              <Input type="password" {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
+      <FormField
+        name="retypePassword"
+        control={form.control}
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Retype Password</FormLabel>
+            <FormControl>
+              <Input type="password" {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+    </ThemeForm>
   );
 }

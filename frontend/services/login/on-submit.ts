@@ -1,16 +1,16 @@
 import axios, { AxiosError } from "axios";
 
-import { backendRoutes } from "@/config";
+import { LoginFormData } from "@/types/login/form-schema";
 import { toast } from "@/components/ui/use-toast";
-import { SignUpFormData } from "@/types/sign-up/form-schema";
+import { backendRoutes } from "@/config";
 
-export interface SubmitSignUpDataErrorResponse {
-  userError: string;
+export interface SubmitLoginDataErrorResponse {
+  userError?: string;
 }
 
-export async function submitSignUpData(data: SignUpFormData) {
+export async function submitLoginData(data: LoginFormData) {
   try {
-    await axios.post(backendRoutes.user.create, data);
+    const response = await axios.post(backendRoutes.user.login, data);
 
     toast({
       title: "Created!",
@@ -24,12 +24,8 @@ export async function submitSignUpData(data: SignUpFormData) {
     }
 
     const data = (error as AxiosError).response
-      ?.data as SubmitSignUpDataErrorResponse;
+      ?.data as SubmitLoginDataErrorResponse;
 
-    toast({
-      title: "Error",
-      description: data.userError,
-      variant: "destructive",
-    });
+    toast({ title: "Error", description: data.userError });
   }
 }
