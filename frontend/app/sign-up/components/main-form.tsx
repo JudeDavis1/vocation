@@ -27,7 +27,7 @@ export function MainForm() {
       form={form}
       onSubmit={submitSignUpData}
     >
-      <div className="md:flex md:gap-x-8 space-y-6">
+      <div className="md:flex md:gap-x-8 md:space-y-0 space-y-6">
         <FormField
           name="firstName"
           control={form.control}
