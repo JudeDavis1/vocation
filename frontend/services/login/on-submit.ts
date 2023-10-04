@@ -10,7 +10,6 @@ export interface SubmitLoginDataErrorResponse {
 
 export async function submitLoginData(data: LoginFormData) {
   try {
-    console.log(data);
     const response = await axios.post(backendRoutes.user.login, data);
 
     toast({
@@ -20,13 +19,21 @@ export async function submitLoginData(data: LoginFormData) {
     });
   } catch (error) {
     if (!(error instanceof AxiosError)) {
-      toast({ title: "Unknown Error", description: "Please try again later" });
+      toast({
+        title: "Unknown Error",
+        description: "Please try again later",
+        variant: "destructive",
+      });
       return;
     }
 
     const data = (error as AxiosError).response
       ?.data as SubmitLoginDataErrorResponse;
 
-    toast({ title: "Error", description: data.userError });
+    toast({
+      title: "Error",
+      description: data.userError,
+      variant: "destructive",
+    });
   }
 }
