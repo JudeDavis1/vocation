@@ -12,4 +12,8 @@ func SetupRoutes(r *gin.Engine) {
 	/* Endpoints here */
 
 	base.GET("/hello", handlers.Hello)
+
+	// Users
+	base.POST("/user/create", handlers.CreateUser)
+	base.POST("/user/login", handlers.LoginUser)
 }

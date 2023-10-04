@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"gorm.io/driver/postgres"
@@ -18,6 +19,14 @@ func main() {
 	godotenv.Load(".env.secret")
 	DB_URL := os.Getenv("DB_URL")
 	r := gin.Default()
+
+	// Configuring CORS
+	config := cors.DefaultConfig()
+	config.AllowOrigins = []string{"http://localhost:3000"}
+	config.AllowMethods = []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"}
+	config.AllowHeaders = []string{"Origin", "Content-Length", "Content-Type", "Authorization"}
+
+	r.Use(cors.New(config))
 
 	db, err := gorm.Open(postgres.Open(DB_URL), &gorm.Config{})
 	if err != nil {
