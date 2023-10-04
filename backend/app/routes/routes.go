@@ -15,4 +15,5 @@ func SetupRoutes(r *gin.Engine) {
 
 	// Users
 	base.POST("/user/create", handlers.CreateUser)
+	base.POST("/user/login", handlers.LoginUser)
 }

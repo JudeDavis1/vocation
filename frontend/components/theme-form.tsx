@@ -45,22 +45,6 @@ export function ThemeForm<DataShape extends FieldValues>({
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               {children}
-              {/* {fields.map((item, i) => (
-                <FormField
-                  key={i}
-                  name={item.name as Path<DataShape>}
-                  control={form.control}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{item.label}</FormLabel>
-                      <FormControl>
-                        <Input {...item.inputProps} {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              ))} */}
 
               <Button type="submit" className="flex justify-end ml-auto">
                 Submit

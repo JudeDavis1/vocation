@@ -10,11 +10,12 @@ export interface SubmitLoginDataErrorResponse {
 
 export async function submitLoginData(data: LoginFormData) {
   try {
+    console.log(data);
     const response = await axios.post(backendRoutes.user.login, data);
 
     toast({
-      title: "Created!",
-      description: "User successfully created.",
+      title: "Success!",
+      description: response.data.userMsg,
       variant: "success",
     });
   } catch (error) {

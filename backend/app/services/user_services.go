@@ -3,6 +3,7 @@ package services
 import (
 	"backend/app/handlers/dtos"
 	"backend/app/models"
+	"fmt"
 
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
@@ -34,4 +35,17 @@ func UserExists(email string, db *gorm.DB) bool {
 	db.Model(&models.User{}).Where(&models.User{Email: email}).Count(&existingUsers)
 
 	return existingUsers > 0
+}
+
+func CheckUserAuthentication(dto dtos.LoginUserDTO, db *gorm.DB) (models.User, error) {
+	var user models.User
+	result := db.First(&user, models.User{Email: dto.Email})
+	if result.Error != nil {
+		fmt.Println(result.Error)
+		return models.User{}, result.Error
+	}
+
+	err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(dto.Password))
+	fmt.Println(err)
+	return user, err
 }

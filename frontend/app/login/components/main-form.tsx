@@ -5,7 +5,6 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { ThemeForm } from "@/components/theme-form";
-import { toast } from "@/components/ui/use-toast";
 import {
   FormControl,
   FormField,
@@ -34,9 +33,9 @@ export function MainForm() {
         control={form.control}
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Password</FormLabel>
+            <FormLabel>Email</FormLabel>
             <FormControl>
-              <Input type="password" {...field} />
+              <Input type="email" {...field} />
             </FormControl>
             <FormMessage />
           </FormItem>

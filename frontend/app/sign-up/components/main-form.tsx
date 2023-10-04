@@ -27,33 +27,35 @@ export function MainForm() {
       form={form}
       onSubmit={submitSignUpData}
     >
-      <FormField
-        name="firstName"
-        control={form.control}
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>First Name</FormLabel>
-            <FormControl>
-              <Input {...field} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
+      <div className="md:flex md:gap-x-8 space-y-6">
+        <FormField
+          name="firstName"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>First Name</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-      <FormField
-        name="lastName"
-        control={form.control}
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Last Name</FormLabel>
-            <FormControl>
-              <Input {...field} />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
+        <FormField
+          name="lastName"
+          control={form.control}
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Last Name</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </div>
 
       <FormField
         name="email"
