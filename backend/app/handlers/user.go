@@ -4,11 +4,17 @@ import (
 	"backend/app/handlers/dtos"
 	"backend/app/services"
 	"backend/app/services/security"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
+
+func GetUser(ctx *gin.Context) {
+	fmt.Println("COOKIE MON")
+	fmt.Println(ctx.Request.Cookies())
+}
 
 func CreateUser(ctx *gin.Context) {
 	/* Create the user in the DB */
@@ -80,15 +86,15 @@ func LoginUser(ctx *gin.Context) {
 		return
 	}
 
-	ctx.SetCookie(
-		"sessionToken",
-		sessionToken.TokenValue,
-		int(sessionToken.Expiry),
-		"/",
-		"",
-		false,
-		true,
-	)
+	http.SetCookie(ctx.Writer, &http.Cookie{
+		Name:     "sessionToken",
+		Value:    sessionToken.TokenValue,
+		Path:     "/",
+		Domain:   "localhost",
+		Secure:   false,
+		HttpOnly: true,
+		SameSite: http.SameSiteLaxMode,
+	})
 
 	ctx.JSON(http.StatusAccepted, gin.H{
 		"userMsg": "Logged in!",

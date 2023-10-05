@@ -20,7 +20,6 @@ func GenerateJWT(user models.User) (SessionToken, error) {
 	expiry := time.Now().Add(days * 14).Unix()
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"userId": user.ID,
-		"exp":    expiry,
 	})
 	tokenString, err := token.SignedString(jwtSecret)
 	if err != nil {
