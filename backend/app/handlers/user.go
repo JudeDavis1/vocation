@@ -2,9 +2,9 @@ package handlers
 
 import (
 	"backend/app/handlers/dtos"
+	"backend/app/models"
 	"backend/app/services"
 	"backend/app/services/security"
-	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -12,15 +12,26 @@ import (
 )
 
 func GetUser(ctx *gin.Context) {
-	fmt.Println("COOKIE MON")
-	fmt.Println(ctx.Request.Cookies())
+	db := ctx.MustGet("db").(*gorm.DB)
+	sessionToken := ctx.MustGet("sessionToken").(*security.SessionTokenPayload)
+
+	var user models.User
+	result := db.Find(&user, sessionToken.UserId)
+	if result.Error != nil {
+		ctx.JSON(http.StatusUnauthorized, gin.H{
+			"userError": "Unauthorized. Please login to access this info.",
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, user)
 }
 
 func CreateUser(ctx *gin.Context) {
 	/* Create the user in the DB */
 
 	var dto dtos.CreateUserDTO
-	db, _ := ctx.MustGet("db").(*gorm.DB)
+	db := ctx.MustGet("db").(*gorm.DB)
 
 	err := ctx.BindJSON(&dto)
 	if err != nil {
@@ -69,7 +80,7 @@ func LoginUser(ctx *gin.Context) {
 		return
 	}
 
-	db, _ := ctx.MustGet("db").(*gorm.DB)
+	db := ctx.MustGet("db").(*gorm.DB)
 	user, err := services.CheckUserAuthentication(dto, db)
 	if err != nil {
 		ctx.JSON(http.StatusUnauthorized, gin.H{
@@ -86,15 +97,15 @@ func LoginUser(ctx *gin.Context) {
 		return
 	}
 
-	http.SetCookie(ctx.Writer, &http.Cookie{
-		Name:     "sessionToken",
-		Value:    sessionToken.TokenValue,
-		Path:     "/",
-		Domain:   "localhost",
-		Secure:   false,
-		HttpOnly: true,
-		SameSite: http.SameSiteLaxMode,
-	})
+	ctx.SetCookie(
+		"sessionToken",
+		sessionToken,
+		0,
+		"/",
+		"",
+		false,
+		true,
+	)
 
 	ctx.JSON(http.StatusAccepted, gin.H{
 		"userMsg": "Logged in!",
