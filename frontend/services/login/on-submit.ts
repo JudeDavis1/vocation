@@ -10,13 +10,19 @@ export interface SubmitLoginDataErrorResponse {
 
 export async function submitLoginData(data: LoginFormData) {
   try {
-    const response = await axios.post(backendRoutes.user.login, data);
+    const response = await axios.post(backendRoutes.user.login, data, {
+      withCredentials: true,
+    });
 
     toast({
       title: "Success!",
       description: response.data.userMsg,
       variant: "success",
     });
+    const res = await axios.get(backendRoutes.user.get, {
+      withCredentials: true,
+    });
+    console.log(res.data);
   } catch (error) {
     if (!(error instanceof AxiosError)) {
       toast({
