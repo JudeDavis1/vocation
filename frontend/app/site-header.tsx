@@ -10,6 +10,7 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
+import { frontendRoutes } from "@/config";
 
 interface NavMenuItemProps {
   title: string;
@@ -20,11 +21,11 @@ export function SiteHeader() {
   const rightMenuItems: NavMenuItemProps[] = [
     {
       title: "Login",
-      href: "/login",
+      href: frontendRoutes.login,
     },
     {
       title: "Sign Up",
-      href: "/sign-up",
+      href: frontendRoutes.signUp,
     },
   ];
   return (

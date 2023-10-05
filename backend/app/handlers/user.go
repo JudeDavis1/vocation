@@ -5,6 +5,7 @@ import (
 	"backend/app/models"
 	"backend/app/services"
 	"backend/app/services/security"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -14,6 +15,8 @@ import (
 func GetUser(ctx *gin.Context) {
 	db := ctx.MustGet("db").(*gorm.DB)
 	sessionToken := ctx.MustGet("sessionToken").(*security.SessionTokenPayload)
+
+	fmt.Println(sessionToken.UserId)
 
 	var user models.User
 	result := db.Find(&user, sessionToken.UserId)

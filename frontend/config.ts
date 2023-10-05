@@ -11,3 +11,13 @@ export const backendRoutes = {
     get: AppSettings.shared.backendURL + "/user",
   },
 };
+
+export const frontendRoutes = {
+  login: "/login",
+  signUp: "/sign-up",
+
+  // User's personal profile
+  me: {
+    dashboard: "/me/dashboard",
+  },
+};

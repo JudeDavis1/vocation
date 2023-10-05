@@ -1,14 +1,11 @@
 import "./globals.css";
-import { Inter } from "next/font/google";
 import type { Metadata } from "next";
 
 import { SiteHeader } from "./site-header";
 
-import { ThemeProvider } from "@/components/theme-provider";
-import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toaster";
-
-const inter = Inter({ subsets: ["latin"] });
+import { ThemeProvider } from "@/components/theme/provider";
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -20,11 +17,11 @@ export const metadata: Metadata = {
   ],
 };
 
-export default function RootLayout({
-  children,
-}: {
+export interface RootLayoutProps {
   children: React.ReactNode;
-}) {
+}
+
+export default function ({ children }: RootLayoutProps) {
   return (
     <html lang="en">
       <head />
@@ -37,7 +34,6 @@ export default function RootLayout({
         >
           <div className="relative flex min-h-screen flex-col">
             {/* SITE HEADER */}
-            <SiteHeader />
             <div className="flex-1">{children}</div>
             {/* SITE FOOTER */}
             <Toaster />
