@@ -27,7 +27,16 @@ func GetUser(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, user)
+	ctx.JSON(http.StatusOK, gin.H{
+		"firstname":         user.Firstname,
+		"lastname":          user.Lastname,
+		"role":              user.Role,
+		"email":             user.Email,
+		"userType":          user.UserType,
+		"annualLeaveDays":   user.AnnualLeaveDays,
+		"currentProjects":   user.CurrentProjects,
+		"completedProjects": user.CompletedProjects,
+	})
 }
 
 func CreateUser(ctx *gin.Context) {

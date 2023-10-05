@@ -2,28 +2,21 @@
 
 import axios from "axios";
 import React from "react";
-import { Loader } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
-import { backendRoutes } from "@/config";
-
-interface IUserData {}
+import { User } from "@/types/models/user";
+import { getUserData } from "@/services/dashboard/fetch-user";
 
 export function SummarySection() {
-  const [fetching, setFetching] = React.useState(true);
-  const [userData, setUserData] = React.useState<IUserData>();
+  const [userData, setUserData] = React.useState<User>();
   React.useEffect(() => {
-    axios
-      .get(backendRoutes.user.get, { withCredentials: true })
-      .then((data) => {
-        setUserData(data);
-        setFetching(false);
-      });
-  }, [userData]);
+    getUserData().then(setUserData);
+  }, []);
 
   return (
     <div>
-      {fetching && <Loader className="animate-spin" />}
-      {userData && <div>Loaded!</div>}
+      {!userData && <Loader2 className="animate-spin" />}
+      {userData && <div>{userData.email}</div>}
     </div>
   );
 }

@@ -11,11 +11,10 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { frontendRoutes } from "@/config";
-
-interface NavMenuItemProps {
-  title: string;
-  href: string;
-}
+import {
+  NavMenuItem,
+  NavMenuItemProps,
+} from "@/components/theme/nav-menu-item";
 
 export function SiteHeader() {
   const rightMenuItems: NavMenuItemProps[] = [
@@ -38,17 +37,5 @@ export function SiteHeader() {
         </NavigationMenuList>
       </NavigationMenu>
     </div>
-  );
-}
-
-function NavMenuItem({ title, href }: NavMenuItemProps) {
-  return (
-    <NavigationMenuItem key={React.useId()}>
-      <Link href={href} legacyBehavior passHref>
-        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-          {title}
-        </NavigationMenuLink>
-      </Link>
-    </NavigationMenuItem>
   );
 }
