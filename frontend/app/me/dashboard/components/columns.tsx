@@ -9,13 +9,8 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Project, ProjectStatusKey } from "@/types/models/user";
+import { Project } from "@/types/models/user";
 
-export type ProjectRow = {
-  title: string;
-  description: string;
-  status: ProjectStatusKey;
-};
 export const columns: ColumnDef<Project>[] = [
   {
     id: "select",

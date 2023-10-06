@@ -14,7 +14,7 @@ import {
 } from "@tanstack/react-table";
 import { Loader } from "lucide-react";
 
-import { ProjectRow, columns } from "./columns";
+import { columns } from "./columns";
 
 import { Input } from "@/components/ui/input";
 import {
