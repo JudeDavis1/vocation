@@ -1,8 +1,8 @@
 "use client";
 
-import axios from "axios";
 import React from "react";
-import { Loader2 } from "lucide-react";
+
+import { CreateProjectForm } from "./create-project-form";
 
 import { User } from "@/types/models/user";
 import { getUserData } from "@/services/dashboard/fetch-user";
@@ -14,9 +14,8 @@ export function SummarySection() {
   }, []);
 
   return (
-    <div>
-      {!userData && <Loader2 className="animate-spin" />}
-      {userData && <div>{userData.email}</div>}
+    <div className="sm:p-4 flex justify-center">
+      <CreateProjectForm />
     </div>
   );
 }

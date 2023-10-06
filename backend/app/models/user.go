@@ -2,11 +2,11 @@ package models
 
 import "gorm.io/gorm"
 
-type UserType int
+type UserType string
 
 const (
-	REGULAR UserType = iota
-	MANAGER
+	REGULAR UserType = "Regular"
+	MANAGER UserType = "Manager"
 )
 
 type User struct {
