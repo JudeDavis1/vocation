@@ -13,6 +13,8 @@ const (
 type Project struct {
 	gorm.Model
 
+	ID uint `gorm:"primarykey"`
+
 	Title       string
 	Description string
 	Status      ProjectStatus

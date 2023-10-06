@@ -12,6 +12,8 @@ const (
 type User struct {
 	gorm.Model
 
+	ID uint `gorm:"primarykey"`
+
 	Firstname string
 	Lastname  string
 

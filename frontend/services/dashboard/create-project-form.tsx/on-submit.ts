@@ -4,16 +4,30 @@ import { backendRoutes, BackendErrorResponse } from "@/config";
 import { CreateProjectInput } from "@/types/create-project/form-schema";
 import { toast } from "@/components/ui/use-toast";
 
-export async function submitProjectData(data: CreateProjectInput) {
+export async function submitProjectData(
+  data: CreateProjectInput,
+  userId: string
+) {
   try {
-    await axios.post(backendRoutes.project.create, data);
+    await axios.post(
+      backendRoutes.project.create,
+      { ...data, userId },
+      {
+        withCredentials: true,
+      }
+    );
     toast({
       title: "Created!",
       description: "Successfully created project",
+      variant: "success",
     });
   } catch (error) {
     if (!(error instanceof AxiosError)) {
-      toast({ title: "Unknown Error", description: "Please try again later" });
+      toast({
+        title: "Unknown Error",
+        description: "Please try again later",
+        variant: "destructive",
+      });
       return;
     }
 
@@ -21,6 +35,7 @@ export async function submitProjectData(data: CreateProjectInput) {
     toast({
       title: "Error",
       description: errResponse.userError,
+      variant: "destructive",
     });
   }
 }

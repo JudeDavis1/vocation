@@ -1,5 +1,4 @@
 import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,8 +17,13 @@ import {
   createProjectSchema,
 } from "@/types/create-project/form-schema";
 import { submitProjectData } from "@/services/dashboard/create-project-form.tsx/on-submit";
+import { User } from "@/types/models/user";
 
-export function CreateProjectForm() {
+interface CreateProjectFormProps {
+  userData?: User;
+}
+
+export function CreateProjectForm({ userData }: CreateProjectFormProps) {
   const form = useForm<CreateProjectInput>({
     resolver: zodResolver(createProjectSchema),
   });
@@ -32,7 +36,9 @@ export function CreateProjectForm() {
       <CardContent>
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(submitProjectData)}
+            onSubmit={form.handleSubmit(
+              (data) => userData && submitProjectData(data, String(userData.id))
+            )}
             className="space-y-6"
           >
             <FormField

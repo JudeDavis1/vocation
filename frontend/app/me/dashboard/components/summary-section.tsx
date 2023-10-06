@@ -1,12 +1,17 @@
 "use client";
 
 import React from "react";
+import {
+  ScrollAreaScrollbar,
+  ScrollAreaViewport,
+} from "@radix-ui/react-scroll-area";
 
 import { CreateProjectForm } from "./create-project-form";
-import { ProjectCard } from "./project-card";
+import { ProjectsDataTable } from "./projects-data-table";
 
 import { User } from "@/types/models/user";
 import { getUserData } from "@/services/dashboard/fetch-user";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export function SummarySection() {
   const [userData, setUserData] = React.useState<User>();
@@ -15,12 +20,15 @@ export function SummarySection() {
   }, []);
 
   return (
-    <div className="sm:p-4 flex justify-end ml-auto gap-y-2">
-      <CreateProjectForm />
+    <div className="sm:p-4 gap-2 w-full">
+      {/* Project creation form */}
+      <div className="flex justify-end ml-auto">
+        <CreateProjectForm userData={userData} />
+      </div>
 
-      {/* Project List section */}
-      {userData?.projects &&
-        userData.projects.map((project) => <ProjectCard project={project} />)}
+      <br />
+
+      <ProjectsDataTable projects={userData?.projects} />
     </div>
   );
 }

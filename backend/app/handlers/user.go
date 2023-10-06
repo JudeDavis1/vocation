@@ -20,7 +20,7 @@ func GetUser(ctx *gin.Context) {
 	fmt.Println(sessionToken.UserId)
 
 	var user models.User
-	result := db.Find(&user, sessionToken.UserId)
+	result := db.Preload("Projects").First(&user, sessionToken.UserId)
 	if result.Error != nil {
 		ctx.JSON(http.StatusUnauthorized, gin.H{
 			"userError": "Unauthorized. Please login to access this info.",
@@ -29,7 +29,13 @@ func GetUser(ctx *gin.Context) {
 	}
 
 	var responseDto dtos.UserRequestDTO
-	mapstructure.Decode(user, &responseDto)
+	err := mapstructure.Decode(user, &responseDto)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	fmt.Println(user.Projects)
 
 	ctx.JSON(http.StatusOK, responseDto)
 }
