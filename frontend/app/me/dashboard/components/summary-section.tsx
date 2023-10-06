@@ -14,7 +14,7 @@ export function SummarySection() {
   }, []);
 
   return (
-    <div className="sm:p-4 flex justify-center">
+    <div className="sm:p-4 flex justify-end ml-auto">
       <CreateProjectForm />
     </div>
   );
