@@ -14,12 +14,15 @@ func Authenticate() gin.HandlerFunc {
 			jsonUnauthorized(ctx)
 			return
 		}
-		err = security.VerifyJWT(cookie.Value)
+		payload, err := security.VerifyJWT(cookie.Value)
 		if err != nil {
 			jsonUnauthorized(ctx)
 			return
 		}
 
+		ctx.Set("sessionToken", payload)
+
+		// We don't want to run ctx.Next() if there's an auth error
 		ctx.Next()
 	}
 }

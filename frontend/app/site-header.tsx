@@ -10,21 +10,21 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
-
-interface NavMenuItemProps {
-  title: string;
-  href: string;
-}
+import { frontendRoutes } from "@/config";
+import {
+  NavMenuItem,
+  NavMenuItemProps,
+} from "@/components/theme/nav-menu-item";
 
 export function SiteHeader() {
   const rightMenuItems: NavMenuItemProps[] = [
     {
       title: "Login",
-      href: "/login",
+      href: frontendRoutes.login,
     },
     {
       title: "Sign Up",
-      href: "/sign-up",
+      href: frontendRoutes.signUp,
     },
   ];
   return (
@@ -37,17 +37,5 @@ export function SiteHeader() {
         </NavigationMenuList>
       </NavigationMenu>
     </div>
-  );
-}
-
-function NavMenuItem({ title, href }: NavMenuItemProps) {
-  return (
-    <NavigationMenuItem key={React.useId()}>
-      <Link href={href} legacyBehavior passHref>
-        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-          {title}
-        </NavigationMenuLink>
-      </Link>
-    </NavigationMenuItem>
   );
 }

@@ -2,8 +2,10 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
-import { ThemeForm } from "@/components/theme-form";
+import { ThemeForm } from "@/components/theme/form";
 import {
   FormControl,
   FormField,
@@ -14,18 +16,24 @@ import {
 import { Input } from "@/components/ui/input";
 import { LoginFormData, loginFormSchema } from "@/types/login/form-schema";
 import { submitLoginData } from "@/services/login/on-submit";
+import { checkAuth } from "@/services/login/check-auth";
 
 export function MainForm() {
+  const router = useRouter();
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginFormSchema),
   });
+
+  useEffect(() => {
+    checkAuth(router);
+  }, []);
 
   return (
     <ThemeForm
       title="Login"
       description="Welcome back!"
       form={form}
-      onSubmit={submitLoginData}
+      onSubmit={(data) => submitLoginData(data, router)}
     >
       <FormField
         name="email"

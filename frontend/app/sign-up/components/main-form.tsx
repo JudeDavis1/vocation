@@ -2,8 +2,9 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 
-import { ThemeForm } from "@/components/theme-form";
+import { ThemeForm } from "@/components/theme/form";
 import { SignUpFormData, signUpFormSchema } from "@/types/sign-up/form-schema";
 import { submitSignUpData } from "@/services/sign-up/on-submit";
 import {
@@ -19,13 +20,14 @@ export function MainForm() {
   const form = useForm<SignUpFormData>({
     resolver: zodResolver(signUpFormSchema),
   });
+  const router = useRouter();
 
   return (
     <ThemeForm
       title="Sign Up"
       description="Can't wait to have you on board!"
       form={form}
-      onSubmit={submitSignUpData}
+      onSubmit={(data) => submitSignUpData(data, router)}
     >
       <div className="md:flex md:gap-x-8 md:space-y-0 space-y-6">
         <FormField

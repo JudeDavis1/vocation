@@ -1,5 +1,9 @@
-import Image from "next/image";
+import { SiteHeader } from "./site-header";
 
 export default function Home() {
-  return <>hi</>;
+  return (
+    <>
+      <SiteHeader />
+    </>
+  );
 }
