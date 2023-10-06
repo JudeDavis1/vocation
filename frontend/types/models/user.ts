@@ -8,8 +8,7 @@ export type User = {
 
   annualLeaveDays: number;
 
-  currentProjects: Project[];
-  completedProjects: Project[];
+  projects?: Project[];
 };
 
 export type Project = {

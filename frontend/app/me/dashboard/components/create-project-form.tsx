@@ -13,19 +13,16 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-
-const createProjectSchema = z.object({
-  title: z.string().min(1),
-  description: z.string(),
-});
-
-type CreateProjectInput = z.infer<typeof createProjectSchema>;
+import {
+  CreateProjectInput,
+  createProjectSchema,
+} from "@/types/create-project/form-schema";
+import { submitProjectData } from "@/services/dashboard/create-project-form.tsx/on-submit";
 
 export function CreateProjectForm() {
   const form = useForm<CreateProjectInput>({
     resolver: zodResolver(createProjectSchema),
   });
-  const onSubmit = (data: unknown) => {};
 
   return (
     <Card className="p-4 w-full sm:w-96">
@@ -34,7 +31,10 @@ export function CreateProjectForm() {
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <form
+            onSubmit={form.handleSubmit(submitProjectData)}
+            className="space-y-6"
+          >
             <FormField
               control={form.control}
               name="title"

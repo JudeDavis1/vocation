@@ -9,6 +9,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/mitchellh/mapstructure"
 	"gorm.io/gorm"
 )
 
@@ -27,22 +28,16 @@ func GetUser(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusOK, gin.H{
-		"firstname":         user.Firstname,
-		"lastname":          user.Lastname,
-		"role":              user.Role,
-		"email":             user.Email,
-		"userType":          user.UserType,
-		"annualLeaveDays":   user.AnnualLeaveDays,
-		"currentProjects":   user.CurrentProjects,
-		"completedProjects": user.CompletedProjects,
-	})
+	var responseDto dtos.UserRequestDTO
+	mapstructure.Decode(user, &responseDto)
+
+	ctx.JSON(http.StatusOK, responseDto)
 }
 
 func CreateUser(ctx *gin.Context) {
 	/* Create the user in the DB */
 
-	var dto dtos.CreateUserDTO
+	var dto dtos.CreateUserRequestDTO
 	db := ctx.MustGet("db").(*gorm.DB)
 
 	err := ctx.BindJSON(&dto)
@@ -73,7 +68,10 @@ func CreateUser(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusCreated, gin.H{"userMsg": "User created!", "user": user})
+	var responseDto dtos.UserRequestDTO
+	mapstructure.Decode(user, &responseDto)
+
+	ctx.JSON(http.StatusCreated, gin.H{"userMsg": "User created!", "user": responseDto})
 }
 
 func LoginUser(ctx *gin.Context) {

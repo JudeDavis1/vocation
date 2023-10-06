@@ -1,13 +1,9 @@
 import axios, { AxiosError } from "axios";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
-import { backendRoutes, frontendRoutes } from "@/config";
+import { BackendErrorResponse, backendRoutes, frontendRoutes } from "@/config";
 import { toast } from "@/components/ui/use-toast";
 import { SignUpFormData } from "@/types/sign-up/form-schema";
-
-export interface SubmitSignUpDataErrorResponse {
-  userError: string;
-}
 
 export async function submitSignUpData(
   data: SignUpFormData,
@@ -28,12 +24,11 @@ export async function submitSignUpData(
       return;
     }
 
-    const data = (error as AxiosError).response
-      ?.data as SubmitSignUpDataErrorResponse;
+    const errResponse = error.response?.data as BackendErrorResponse;
 
     toast({
       title: "Error",
-      description: data.userError,
+      description: errResponse.userError,
       variant: "destructive",
     });
   }

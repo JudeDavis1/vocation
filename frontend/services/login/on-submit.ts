@@ -3,11 +3,7 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 
 import { LoginFormData } from "@/types/login/form-schema";
 import { toast } from "@/components/ui/use-toast";
-import { backendRoutes, frontendRoutes } from "@/config";
-
-export interface SubmitLoginDataErrorResponse {
-  userError?: string;
-}
+import { BackendErrorResponse, backendRoutes, frontendRoutes } from "@/config";
 
 export async function submitLoginData(
   data: LoginFormData,
@@ -34,13 +30,11 @@ export async function submitLoginData(
       });
       return;
     }
-
-    const data = (error as AxiosError).response
-      ?.data as SubmitLoginDataErrorResponse;
+    const errResponse = error.response?.data as BackendErrorResponse;
 
     toast({
       title: "Error",
-      description: data.userError,
+      description: errResponse.userError,
       variant: "destructive",
     });
   }

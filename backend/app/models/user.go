@@ -22,8 +22,7 @@ type User struct {
 
 	AnnualLeaveDays int
 
-	CurrentProjects   []Project `gorm:"foreignKey:UserID"`
-	CompletedProjects []Project `gorm:"foreignKey:UserID"`
+	Projects []Project `gorm:"foreignKey:UserID"`
 }
 
 func (user *User) FullName() string {
