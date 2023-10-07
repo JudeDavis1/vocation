@@ -3,6 +3,7 @@ import {
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
 import { NavMenuItem } from "@/components/theme/nav-menu-item";
+import { ModeToggle } from "@/components/theme/mode-toggle";
 
 export function MeNavBar() {
   return (
@@ -13,6 +14,7 @@ export function MeNavBar() {
           <div className="space-x-4 flex">
             <NavMenuItem href="" title="Explore" />
             <NavMenuItem href="" title="Monitor" />
+            <ModeToggle />
           </div>
         </NavigationMenuList>
       </NavigationMenu>
