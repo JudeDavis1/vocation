@@ -67,7 +67,7 @@ export function ProjectsDataTable({
 
   return (
     <div className="w-full">
-      <div className="flex items-center py-4 gap-x-2">
+      <div className="flex items-center py-4 gap-x-4">
         <Input
           placeholder="Filter by title..."
           value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
@@ -77,34 +77,11 @@ export function ProjectsDataTable({
           className="max-w-sm"
         />
         {Object.keys(rowSelection).length ? (
-          <Button
-            variant="destructive"
-            onClick={async () => {
-              // Get selected keys and delete the associated project(s)
-              try {
-                await Promise.all(
-                  Object.keys(rowSelection).map(async (item) => {
-                    const idx = parseInt(item);
-                    const project = projects[idx];
-
-                    return deleteProject(project);
-                  })
-                );
-                setReload(true);
-                toast({
-                  title: "Success",
-                  description: `Successfully deleted ${
-                    Object.keys(rowSelection).length
-                  } Project(s)`,
-                  variant: "success",
-                });
-              } catch (error) {
-                backendErrorHandle(error);
-              }
-            }}
-          >
-            Delete
-          </Button>
+          <RowDeleteButton
+            projects={projects}
+            rowSelection={rowSelection}
+            setReload={setReload}
+          />
         ) : (
           <></>
         )}
@@ -166,5 +143,48 @@ export function ProjectsDataTable({
         </div>
       </div>
     </div>
+  );
+}
+
+interface RowDeleteButton {
+  projects: Project[];
+  rowSelection: Record<number, boolean>;
+  setReload: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+function RowDeleteButton({
+  projects,
+  rowSelection,
+  setReload,
+}: RowDeleteButton) {
+  return (
+    <Button
+      variant="destructive"
+      onClick={async () => {
+        // Get selected keys and delete the associated project(s)
+        try {
+          await Promise.all(
+            Object.keys(rowSelection).map(async (item) => {
+              const idx = parseInt(item);
+              const project = projects[idx];
+
+              return deleteProject(project);
+            })
+          );
+          setReload(true);
+          toast({
+            title: "Success",
+            description: `Successfully deleted ${
+              Object.keys(rowSelection).length
+            } Project(s)`,
+            variant: "success",
+          });
+        } catch (error) {
+          backendErrorHandle(error);
+        }
+      }}
+    >
+      Delete
+    </Button>
   );
 }

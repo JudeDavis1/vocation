@@ -23,8 +23,12 @@ export function SummarySection() {
   }, [reload]);
 
   return (
-    <div className="flex gap-4 sm:p-4">
-      <ScrollArea className="h-96 space-x-1">
+    <div className="md:flex gap-4 sm:p-4 xl:w-2/3 w-full">
+      {/* Project creation form */}
+      <div className="flex justify-start mr-auto m-2">
+        <CreateProjectForm userData={userData} setReload={setReload} />
+      </div>
+      <ScrollArea className="h-96 w-full">
         <div className="m-2">
           {reload || userData?.projects == undefined ? (
             <Loader className="animate-spin" />
@@ -36,10 +40,6 @@ export function SummarySection() {
           )}
         </div>
       </ScrollArea>
-      {/* Project creation form */}
-      <div className="flex justify-end ml-auto">
-        <CreateProjectForm userData={userData} setReload={setReload} />
-      </div>
     </div>
   );
 }
