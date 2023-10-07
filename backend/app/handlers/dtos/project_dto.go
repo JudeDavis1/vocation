@@ -6,8 +6,13 @@ type CreateProjectDTO struct {
 	UserID      string `json:"userId"`
 }
 
-type ProjectDTO struct {
+type DeleteProjectDTO struct {
+	ID uint `json:"id"`
+}
+
+type ProjectRequestDTO struct {
 	Title       string `json:"title"`
 	Description string `json:"description"`
 	UserID      uint   `json:"userId"`
+	ID          uint   `json:"id"`
 }

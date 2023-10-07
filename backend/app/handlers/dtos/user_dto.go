@@ -13,12 +13,12 @@ type LoginUserDTO struct {
 }
 
 type UserRequestDTO struct {
-	ID              uint         `json:"id"`
-	Firstname       string       `json:"firstName"`
-	Lastname        string       `json:"lastName"`
-	Role            string       `json:"role"`
-	Email           string       `json:"email"`
-	UserType        string       `json:"userType"`
-	AnnualLeaveDays int          `json:"annualLeaveDays"`
-	Projects        []ProjectDTO `json:"projects"`
+	ID              uint                `json:"id"`
+	Firstname       string              `json:"firstName"`
+	Lastname        string              `json:"lastName"`
+	Role            string              `json:"role"`
+	Email           string              `json:"email"`
+	UserType        string              `json:"userType"`
+	AnnualLeaveDays int                 `json:"annualLeaveDays"`
+	Projects        []ProjectRequestDTO `json:"projects"`
 }
