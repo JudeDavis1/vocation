@@ -4,6 +4,7 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 import { LoginFormData } from "@/types/login/form-schema";
 import { toast } from "@/components/ui/use-toast";
 import { BackendErrorResponse, backendRoutes, frontendRoutes } from "@/config";
+import { backendErrorHandle } from "@/lib/utils/backend-error-handle";
 
 export async function submitLoginData(
   data: LoginFormData,
@@ -21,21 +22,6 @@ export async function submitLoginData(
     });
     router.push(frontendRoutes.me.dashboard);
   } catch (error) {
-    if (!(error instanceof AxiosError)) {
-      console.log(error);
-      toast({
-        title: "Unknown Error",
-        description: "Please try again later",
-        variant: "destructive",
-      });
-      return;
-    }
-    const errResponse = error.response?.data as BackendErrorResponse;
-
-    toast({
-      title: "Error",
-      description: errResponse.userError,
-      variant: "destructive",
-    });
+    backendErrorHandle(error);
   }
 }

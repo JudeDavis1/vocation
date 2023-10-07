@@ -21,9 +21,13 @@ import { User } from "@/types/models/user";
 
 interface CreateProjectFormProps {
   userData?: User;
+  setReload: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export function CreateProjectForm({ userData }: CreateProjectFormProps) {
+export function CreateProjectForm({
+  userData,
+  setReload,
+}: CreateProjectFormProps) {
   const form = useForm<CreateProjectInput>({
     resolver: zodResolver(createProjectSchema),
   });
@@ -36,9 +40,12 @@ export function CreateProjectForm({ userData }: CreateProjectFormProps) {
       <CardContent>
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(
-              (data) => userData && submitProjectData(data, String(userData.id))
-            )}
+            onSubmit={form.handleSubmit(async (data) => {
+              if (userData) {
+                await submitProjectData(data, String(userData.id));
+              }
+              setReload(true);
+            })}
             className="space-y-6"
           >
             <FormField

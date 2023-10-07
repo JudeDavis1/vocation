@@ -3,6 +3,7 @@ import axios, { AxiosError } from "axios";
 import { backendRoutes, BackendErrorResponse } from "@/config";
 import { CreateProjectInput } from "@/types/create-project/form-schema";
 import { toast } from "@/components/ui/use-toast";
+import { backendErrorHandle } from "@/lib/utils/backend-error-handle";
 
 export async function submitProjectData(
   data: CreateProjectInput,
@@ -22,20 +23,6 @@ export async function submitProjectData(
       variant: "success",
     });
   } catch (error) {
-    if (!(error instanceof AxiosError)) {
-      toast({
-        title: "Unknown Error",
-        description: "Please try again later",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    const errResponse = error.response?.data as BackendErrorResponse;
-    toast({
-      title: "Error",
-      description: errResponse.userError,
-      variant: "destructive",
-    });
+    backendErrorHandle(error);
   }
 }

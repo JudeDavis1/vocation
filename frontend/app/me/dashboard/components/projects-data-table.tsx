@@ -8,13 +8,11 @@ import {
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
-  getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { Loader } from "lucide-react";
 
-import { columns } from "./columns";
+import { columns, deleteProject } from "./columns";
 
 import { Input } from "@/components/ui/input";
 import {
@@ -26,31 +24,35 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Project } from "@/types/models/user";
+import { Button } from "@/components/ui/button";
+import { backendErrorHandle } from "@/lib/utils/backend-error-handle";
+import { toast } from "@/components/ui/use-toast";
 
 interface ProjectsDataTableProps {
-  projects?: Project[];
+  projects: Project[];
+  setReload: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export function ProjectsDataTable({ projects }: ProjectsDataTableProps) {
-  if (!projects) {
-    return <Loader className="animate-spin" />;
-  }
-
+export function ProjectsDataTable({
+  projects,
+  setReload,
+}: ProjectsDataTableProps) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
-  const [rowSelection, setRowSelection] = React.useState({});
+  const [rowSelection, setRowSelection] = React.useState<
+    Record<number, boolean>
+  >({});
 
   const table = useReactTable<Project>({
     data: projects,
-    columns,
+    columns: columns(setReload),
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
@@ -65,7 +67,7 @@ export function ProjectsDataTable({ projects }: ProjectsDataTableProps) {
 
   return (
     <div className="w-full">
-      <div className="flex items-center py-4">
+      <div className="flex items-center py-4 gap-x-2">
         <Input
           placeholder="Filter by title..."
           value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
@@ -74,6 +76,38 @@ export function ProjectsDataTable({ projects }: ProjectsDataTableProps) {
           }
           className="max-w-sm"
         />
+        {Object.keys(rowSelection).length ? (
+          <Button
+            variant="destructive"
+            onClick={async () => {
+              // Get selected keys and delete the associated project(s)
+              try {
+                await Promise.all(
+                  Object.keys(rowSelection).map(async (item) => {
+                    const idx = parseInt(item);
+                    const project = projects[idx];
+
+                    return deleteProject(project);
+                  })
+                );
+                setReload(true);
+                toast({
+                  title: "Success",
+                  description: `Successfully deleted ${
+                    Object.keys(rowSelection).length
+                  } Project(s)`,
+                  variant: "success",
+                });
+              } catch (error) {
+                backendErrorHandle(error);
+              }
+            }}
+          >
+            Delete
+          </Button>
+        ) : (
+          <></>
+        )}
       </div>
       <div className="rounded-md border">
         <Table>

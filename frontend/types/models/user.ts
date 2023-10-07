@@ -18,6 +18,7 @@ export type Project = {
   status: ProjectStatusKey;
 
   userId: number;
+  id: number;
 };
 
 export const UserType = {

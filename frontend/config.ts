@@ -16,6 +16,7 @@ export const backendRoutes = {
   },
   project: {
     create: AppSettings.shared.backendURL + "/project/create",
+    delete: AppSettings.shared.backendURL + "/project/delete",
   },
 };
 
