@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -43,6 +43,7 @@ export function CreateProjectForm({
             onSubmit={form.handleSubmit(async (data) => {
               if (userData) {
                 await submitProjectData(data, String(userData.id));
+                // form.reset();
               }
               setReload(true);
             })}

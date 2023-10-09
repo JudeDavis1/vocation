@@ -10,10 +10,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Project } from "@/types/models/user";
+import { Project, ProjectStatus, ProjectStatusKey } from "@/types/models/user";
 import { backendRoutes } from "@/config";
 import { backendErrorHandle } from "@/lib/utils/backend-error-handle";
 import { toast } from "@/components/ui/use-toast";
+import { cn } from "@/lib/utils";
 
 export const columns = (
   setReload: React.Dispatch<React.SetStateAction<boolean>>
@@ -41,9 +42,53 @@ export const columns = (
     {
       accessorKey: "status",
       header: "Status",
-      cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("status")}</div>
-      ),
+      cell: ({ row }) => {
+        const statusColorMap: Record<keyof typeof ProjectStatus, string> = {
+          NOT_STARTED: "bg-gray-700",
+          COMPLETED: "bg-green-800",
+          IN_PROGRESS: "bg-blue-500",
+        };
+        const textMap: Record<keyof typeof ProjectStatus, string> = {
+          NOT_STARTED: "Not Started",
+          COMPLETED: "Completed",
+          IN_PROGRESS: "In Progress",
+        };
+
+        return (
+          <div className="capitalize">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <span
+                  className={cn(
+                    statusColorMap[row.original.status],
+                    "text-white p-2 rounded hover:cursor-pointer"
+                  )}
+                >
+                  {textMap[row.original.status]}
+                </span>
+              </DropdownMenuTrigger>
+
+              <DropdownMenuContent>
+                {Object.keys(textMap).map((keyString, i) => {
+                  const projectStatus = keyString as keyof typeof ProjectStatus;
+                  return (
+                    <DropdownMenuItem key={i}>
+                      <span
+                        className={cn(
+                          statusColorMap[projectStatus],
+                          "text-white p-2 rounded"
+                        )}
+                      >
+                        {textMap[projectStatus]}
+                      </span>
+                    </DropdownMenuItem>
+                  );
+                })}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
+        );
+      },
     },
     {
       accessorKey: "description",

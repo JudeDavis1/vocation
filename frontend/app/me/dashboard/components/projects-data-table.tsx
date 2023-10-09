@@ -11,6 +11,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import { Loader } from "lucide-react";
 
 import { columns, deleteProject } from "./columns";
 
@@ -30,11 +31,13 @@ import { toast } from "@/components/ui/use-toast";
 
 interface ProjectsDataTableProps {
   projects: Project[];
+  reload: boolean;
   setReload: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export function ProjectsDataTable({
   projects,
+  reload,
   setReload,
 }: ProjectsDataTableProps) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -130,7 +133,11 @@ export function ProjectsDataTable({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  {reload ? (
+                    <Loader className="animate-spin" />
+                  ) : (
+                    <>No results.</>
+                  )}
                 </TableCell>
               </TableRow>
             )}

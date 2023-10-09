@@ -23,21 +23,18 @@ export function SummarySection() {
   }, [reload]);
 
   return (
-    <div className="md:flex gap-4 sm:p-4 xl:w-2/3 w-full">
+    <div className="md:flex gap-4 sm:p-4 xl:w-2/3 w-full border-solid border-2 rounded-3xl border-secondary">
       {/* Project creation form */}
       <div className="flex justify-start mr-auto m-2">
         <CreateProjectForm userData={userData} setReload={setReload} />
       </div>
       <ScrollArea className="h-96 w-full">
         <div className="m-2">
-          {reload || userData?.projects == undefined ? (
-            <Loader className="animate-spin" />
-          ) : (
-            <ProjectsDataTable
-              projects={userData?.projects}
-              setReload={setReload}
-            />
-          )}
+          <ProjectsDataTable
+            projects={userData?.projects ?? []}
+            reload={reload}
+            setReload={setReload}
+          />
         </div>
       </ScrollArea>
     </div>
