@@ -1,7 +1,7 @@
 import axios from "axios";
 
 import { backendRoutes } from "@/config";
-import { ProjectStatus } from "@/types/models/user";
+import { Project, ProjectStatus } from "@/types/models/user";
 
 export async function changeProjectStatus(
   projectId: number,
@@ -20,4 +20,13 @@ export async function changeProjectStatus(
     { withCredentials: true }
   );
   setReload(true);
+}
+
+export async function deleteProject(project: Project) {
+  await axios({
+    method: "delete",
+    url: backendRoutes.project.delete,
+    data: { id: project.id },
+    withCredentials: true,
+  });
 }

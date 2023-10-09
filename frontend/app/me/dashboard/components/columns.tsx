@@ -1,6 +1,7 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import axios from "axios";
+import { ChevronDown } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -15,7 +16,10 @@ import { backendRoutes } from "@/config";
 import { backendErrorHandle } from "@/lib/utils/backend-error-handle";
 import { toast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
-import { changeProjectStatus } from "@/services/dashboard/table-actions";
+import {
+  changeProjectStatus,
+  deleteProject,
+} from "@/services/dashboard/table-actions";
 
 export const columns = (
   setReload: React.Dispatch<React.SetStateAction<boolean>>
@@ -62,7 +66,7 @@ export const columns = (
                 <span
                   className={cn(
                     statusColorMap[row.original.status],
-                    "text-white p-2 rounded hover:cursor-pointer"
+                    "text-white p-2 rounded-lg hover:cursor-pointer"
                   )}
                 >
                   {textMap[row.original.status]}
@@ -88,7 +92,7 @@ export const columns = (
                       <span
                         className={cn(
                           statusColorMap[projectStatus],
-                          "text-white p-2 rounded"
+                          "text-white p-2 rounded-lg"
                         )}
                       >
                         {textMap[projectStatus]}
@@ -154,12 +158,3 @@ export const columns = (
     },
   ];
 };
-
-export async function deleteProject(project: Project) {
-  await axios({
-    method: "delete",
-    url: backendRoutes.project.delete,
-    data: { id: project.id },
-    withCredentials: true,
-  });
-}
