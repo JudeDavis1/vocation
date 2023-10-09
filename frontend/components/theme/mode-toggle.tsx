@@ -16,7 +16,7 @@ export function ModeToggle() {
   const { setTheme } = useTheme();
 
   React.useEffect(() => {
-    setTheme("light");
+    setTheme("system");
   }, []);
 
   return (

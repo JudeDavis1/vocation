@@ -22,4 +22,5 @@ func SetupRoutes(r *gin.Engine) {
 	// Projects
 	base.POST("/project/create", middleware.Authenticate(), handlers.CreateProject)
 	base.DELETE("/project/delete", middleware.Authenticate(), handlers.DeleteProject)
+	base.PATCH("/project/update", middleware.Authenticate(), handlers.UpdateProject)
 }

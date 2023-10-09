@@ -15,6 +15,7 @@ import { backendRoutes } from "@/config";
 import { backendErrorHandle } from "@/lib/utils/backend-error-handle";
 import { toast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
+import { changeProjectStatus } from "@/services/dashboard/table-actions";
 
 export const columns = (
   setReload: React.Dispatch<React.SetStateAction<boolean>>
@@ -72,7 +73,18 @@ export const columns = (
                 {Object.keys(textMap).map((keyString, i) => {
                   const projectStatus = keyString as keyof typeof ProjectStatus;
                   return (
-                    <DropdownMenuItem key={i}>
+                    <DropdownMenuItem
+                      key={i}
+                      className="hover:cursor-pointer"
+                      onClick={() =>
+                        changeProjectStatus(
+                          row.original.id,
+                          projectStatus,
+                          row.original.status,
+                          setReload
+                        )
+                      }
+                    >
                       <span
                         className={cn(
                           statusColorMap[projectStatus],

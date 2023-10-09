@@ -16,7 +16,7 @@ import {
   CreateProjectInput,
   createProjectSchema,
 } from "@/types/create-project/form-schema";
-import { submitProjectData } from "@/services/dashboard/create-project-form.tsx/on-submit";
+import { submitProjectData } from "@/services/dashboard/create-project-form/on-submit";
 import { User } from "@/types/models/user";
 
 interface CreateProjectFormProps {
