@@ -5,8 +5,8 @@ import "gorm.io/gorm"
 type UserType string
 
 const (
-	REGULAR UserType = "Regular"
-	MANAGER UserType = "Manager"
+	REGULAR UserType = "REGULAR"
+	MANAGER UserType = "MANAGER"
 )
 
 type User struct {

@@ -15,22 +15,23 @@ export type User = {
 export type Project = {
   title: string;
   description: string;
-  status: ProjectStatusKey;
+  status: keyof typeof ProjectStatus;
 
   userId: number;
   id: number;
 };
 
-export const UserType = {
-  REGULAR: "Regular",
-  MANAGER: "Manager",
-} as const;
+export enum UserType {
+  REGULAR = "Regular",
+  MANAGER = "Manager",
+}
 export type UserTypeKey = (typeof UserType)[keyof typeof UserType];
 
-export const ProjectStatus = {
-  NOT_STARTED: "Not Started",
-  IN_PROGRESS: "In Progress",
-  COMPLETED: "Completed",
-} as const;
+export enum ProjectStatus {
+  NOT_STARTED = "Not Started",
+  IN_PROGRESS = "In Progress",
+  COMPLETED = "Completed",
+}
+
 export type ProjectStatusKey =
   (typeof ProjectStatus)[keyof typeof ProjectStatus];

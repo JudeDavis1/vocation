@@ -14,5 +14,6 @@ type ProjectRequestDTO struct {
 	Title       string `json:"title"`
 	Description string `json:"description"`
 	UserID      uint   `json:"userId"`
+	Status      string `json:"status"`
 	ID          uint   `json:"id"`
 }

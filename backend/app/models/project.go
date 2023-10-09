@@ -5,9 +5,9 @@ import "gorm.io/gorm"
 type ProjectStatus string
 
 const (
-	NOT_STARTED ProjectStatus = "Not Started"
-	IN_PROGRESS ProjectStatus = "In Progress"
-	COMPLETED   ProjectStatus = "Completed"
+	NOT_STARTED ProjectStatus = "NOT_STARTED"
+	IN_PROGRESS ProjectStatus = "IN_PROGRESS"
+	COMPLETED   ProjectStatus = "COMPLETED"
 )
 
 type Project struct {
