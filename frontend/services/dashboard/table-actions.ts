@@ -1,7 +1,8 @@
 import axios from "axios";
+import { isEqual } from "lodash";
 
 import { backendRoutes } from "@/config";
-import { Project, ProjectStatus } from "@/types/models/user";
+import { Project } from "@/types/models/user";
 
 export async function updateProject(
   projectId: number,
@@ -10,7 +11,15 @@ export async function updateProject(
   setReload: SetReloadState
 ) {
   // Ensure we don't make any unrequired backend calls
-  if (newProject === originalProject) {
+  // Make a comparable object to the newProject Partial
+  const comparableOriginal = Object.keys(newProject).reduce((acc, key) => {
+    if (key in originalProject) {
+      acc[key] = originalProject[key];
+    }
+    return acc;
+  }, {} as Partial<Project>);
+
+  if (isEqual(newProject, comparableOriginal)) {
     return;
   }
 

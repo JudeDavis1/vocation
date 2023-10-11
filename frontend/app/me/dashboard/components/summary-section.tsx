@@ -13,6 +13,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 export function SummarySection() {
   const [reload, setReload] = React.useState(true);
   const [userData, setUserData] = React.useState<User>();
+
   React.useEffect(() => {
     if (reload) {
       getUserData().then((data: User) => {

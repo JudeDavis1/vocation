@@ -13,6 +13,8 @@ export type User = {
 };
 
 export type Project = {
+  [key: string]: any;
+
   title: string;
   description: string;
   status: keyof typeof ProjectStatus;
