@@ -138,7 +138,7 @@ export const columns = (setReload: SetReloadState): ColumnDef<Project>[] => {
                   <DotsHorizontalIcon className="h-4 w-4" />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
+              <DropdownMenuContent align="start">
                 <DropdownMenuItem
                   onClick={async () => {
                     try {
