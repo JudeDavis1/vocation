@@ -3,20 +3,20 @@ import axios from "axios";
 import { backendRoutes } from "@/config";
 import { Project, ProjectStatus } from "@/types/models/user";
 
-export async function changeProjectStatus(
+export async function updateProject(
   projectId: number,
-  newStatus: keyof typeof ProjectStatus,
-  originalStatus: keyof typeof ProjectStatus,
-  setReload: React.Dispatch<React.SetStateAction<boolean>>
+  newProject: Partial<Project>,
+  originalProject: Project,
+  setReload: SetReloadState
 ) {
   // Ensure we don't make any unrequired backend calls
-  if (newStatus === originalStatus) {
+  if (newProject === originalProject) {
     return;
   }
 
   await axios.patch(
     backendRoutes.project.update,
-    { id: projectId, status: newStatus },
+    { id: projectId, ...newProject },
     { withCredentials: true }
   );
   setReload(true);

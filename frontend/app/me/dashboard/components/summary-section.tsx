@@ -23,7 +23,7 @@ export function SummarySection() {
   }, [reload]);
 
   return (
-    <div className="md:flex gap-4 sm:p-4 xl:w-2/3 w-full">
+    <div className="lg:flex gap-4 sm:p-4 xl:w-11/12 w-full">
       {/* Project creation form */}
       <div className="flex justify-start mr-auto m-2">
         <CreateProjectForm userData={userData} setReload={setReload} />

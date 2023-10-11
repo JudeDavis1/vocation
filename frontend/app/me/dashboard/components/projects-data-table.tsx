@@ -13,7 +13,7 @@ import {
 } from "@tanstack/react-table";
 import { Loader } from "lucide-react";
 
-import { columns, deleteProject } from "./columns";
+import { columns } from "./columns";
 
 import { Input } from "@/components/ui/input";
 import {
@@ -28,11 +28,12 @@ import { Project } from "@/types/models/user";
 import { Button } from "@/components/ui/button";
 import { backendErrorHandle } from "@/lib/utils/backend-error-handle";
 import { toast } from "@/components/ui/use-toast";
+import { deleteProject } from "@/services/dashboard/table-actions";
 
 interface ProjectsDataTableProps {
   projects: Project[];
   reload: boolean;
-  setReload: React.Dispatch<React.SetStateAction<boolean>>;
+  setReload: SetReloadState;
 }
 
 export function ProjectsDataTable({
@@ -157,7 +158,7 @@ export function ProjectsDataTable({
 interface RowDeleteButton {
   projects: Project[];
   rowSelection: Record<number, boolean>;
-  setReload: React.Dispatch<React.SetStateAction<boolean>>;
+  setReload: SetReloadState;
 }
 
 function RowDeleteButton({

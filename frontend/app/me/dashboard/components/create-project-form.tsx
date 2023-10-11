@@ -1,4 +1,4 @@
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,10 +18,11 @@ import {
 } from "@/types/create-project/form-schema";
 import { submitProjectData } from "@/services/dashboard/create-project-form/on-submit";
 import { User } from "@/types/models/user";
+import { Textarea } from "@/components/ui/textarea";
 
 interface CreateProjectFormProps {
   userData?: User;
-  setReload: React.Dispatch<React.SetStateAction<boolean>>;
+  setReload: SetReloadState;
 }
 
 export function CreateProjectForm({
@@ -43,7 +44,6 @@ export function CreateProjectForm({
             onSubmit={form.handleSubmit(async (data) => {
               if (userData) {
                 await submitProjectData(data, String(userData.id));
-                // form.reset();
               }
               setReload(true);
             })}
@@ -70,14 +70,20 @@ export function CreateProjectForm({
                 <FormItem>
                   <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Input placeholder="Project description" {...field} />
+                    <Textarea
+                      className="h-28"
+                      placeholder="Project description"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
-            <Button className="flex justify-end ml-auto">Create</Button>
+            <Button type="submit" className="flex justify-end ml-auto">
+              Create
+            </Button>
           </form>
         </Form>
       </CardContent>
