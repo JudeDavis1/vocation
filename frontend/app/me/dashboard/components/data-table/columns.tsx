@@ -20,6 +20,7 @@ import {
   updateProject,
   deleteProject,
 } from "@/services/dashboard/table-actions";
+import { DataTableColumnHeader } from "@/components/data-table/column-header";
 
 export const columns = (setReload: SetReloadState): ColumnDef<Project>[] => {
   return [
@@ -44,7 +45,9 @@ export const columns = (setReload: SetReloadState): ColumnDef<Project>[] => {
     },
     {
       accessorKey: "status",
-      header: "Status",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Status" />
+      ),
       cell: ({ row }) => {
         const statusColorMap: Record<keyof typeof ProjectStatus, string> = {
           NOT_STARTED: "bg-gray-700",
@@ -106,14 +109,18 @@ export const columns = (setReload: SetReloadState): ColumnDef<Project>[] => {
     },
     {
       accessorKey: "title",
-      header: "Title",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Title" />
+      ),
       cell: ({ row }) => (
         <div className="capitalize">{row.getValue("title")}</div>
       ),
     },
     {
       accessorKey: "description",
-      header: "Description",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Description" />
+      ),
       cell: ({ row }) => <div>{row.getValue("description")}</div>,
     },
     {
