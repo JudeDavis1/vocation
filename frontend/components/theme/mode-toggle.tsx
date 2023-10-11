@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Cookies from "js-cookie";
 import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
 import { useTheme } from "next-themes";
 
@@ -13,10 +14,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export function ModeToggle() {
-  const { setTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
 
   React.useEffect(() => {
-    setTheme("system");
+    Cookies.set("app-theme", theme ?? "system");
+  }, [theme]);
+
+  React.useEffect(() => {
+    setTheme(Cookies.get("app-theme") ?? "system");
   }, []);
 
   return (
