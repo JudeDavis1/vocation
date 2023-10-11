@@ -1,10 +1,9 @@
 "use client";
 
 import React from "react";
-import { Loader } from "lucide-react";
 
 import { CreateProjectForm } from "./create-project-form";
-import { ProjectsDataTable } from "./projects-data-table";
+import { ProjectsDataTable } from "./data-table/projects-data-table";
 
 import { User } from "@/types/models/user";
 import { getUserData } from "@/services/dashboard/fetch-user";
