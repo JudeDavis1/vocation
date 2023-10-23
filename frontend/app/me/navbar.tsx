@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 import {
   NavigationMenu,
   NavigationMenuList,
@@ -9,6 +11,13 @@ export function MeNavBar() {
   return (
     <div className="p-2">
       <NavigationMenu>
+        <Image
+          src={"/favicon.png"}
+          width={100}
+          height={100}
+          alt=""
+          className="p-4"
+        />
         <h1 className="select-none px-8 text-muted-foreground">Dashboard</h1>
         <NavigationMenuList>
           <div className="space-x-4 flex">
