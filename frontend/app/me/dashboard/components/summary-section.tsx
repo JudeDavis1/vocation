@@ -4,19 +4,19 @@ import React from "react";
 
 import { CreateProjectForm } from "./create-project-form";
 import { ProjectsDataTable } from "./data-table/projects-data-table";
-import { StatsSection } from "./stats-section/kpi-section";
+import { KpiSection } from "./stats-section/kpi-section";
 
 import { User } from "@/lib/types/models/user";
 import { getUserData } from "@/lib/dashboard/fetch-user";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { StatsSectionSummaryItem } from "@/lib/types/project-stats/stats-section-summary";
+import { KpiSectionSummaryItem } from "@/lib/types/project-stats/stats-section-summary";
 import { getProjectSummaryInfo } from "@/lib/kpi-section/get-project-summary-info";
 
 export function SummarySection() {
   const [reload, setReload] = React.useState(true);
   const [userData, setUserData] = React.useState<User>();
   const [projectsSummary, setProjectSummary] =
-    React.useState<StatsSectionSummaryItem>({});
+    React.useState<KpiSectionSummaryItem>({});
 
   React.useEffect(() => {
     if (reload) {
@@ -51,7 +51,7 @@ export function SummarySection() {
       {/* Project creation form */}
       <div className="flex justify-start mr-auto">
         <CreateProjectForm userData={userData} setReload={setReload} />
-        <StatsSection projectInfo={projectsSummary} />
+        <KpiSection projectInfo={projectsSummary} />
       </div>
 
       <ScrollArea className="h-96 w-full border border-solid border-muted rounded-lg">

@@ -1,12 +1,12 @@
 import { Project } from "../types/models/user";
-import { StatsSectionSummaryItem } from "../types/project-stats/stats-section-summary";
+import { KpiSectionSummaryItem } from "../types/project-stats/stats-section-summary";
 
 export function getProjectSummaryInfo(
   projects: Project[]
-): StatsSectionSummaryItem {
+): KpiSectionSummaryItem {
   const getPercentage = (n: number) => (n / projects.length) * 100;
 
-  const summary: StatsSectionSummaryItem = {};
+  const summary: KpiSectionSummaryItem = {};
   summary.completed = getPercentage(
     projects.filter((project) => project.status == "COMPLETED").length
   );

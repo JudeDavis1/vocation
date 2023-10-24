@@ -1,12 +1,12 @@
 import { ProgressItem } from "./progress-item";
 
-import { StatsSectionSummaryItem } from "@/lib/types/project-stats/stats-section-summary";
+import { KpiSectionSummaryItem } from "@/lib/types/project-stats/stats-section-summary";
 
-export interface StatsSectionProps {
-  projectInfo: StatsSectionSummaryItem;
+export interface KpiSectionProps {
+  projectInfo: KpiSectionSummaryItem;
 }
 
-export function StatsSection({ projectInfo }: StatsSectionProps) {
+export function KpiSection({ projectInfo }: KpiSectionProps) {
   return (
     <div className="p-8 space-y-4">
       <h1 className="text-2xl">KPIs for this week</h1>
