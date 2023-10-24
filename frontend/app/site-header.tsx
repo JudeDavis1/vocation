@@ -19,6 +19,10 @@ import {
 export function SiteHeader() {
   const rightMenuItems: NavMenuItemProps[] = [
     {
+      title: "Home",
+      href: "/",
+    },
+    {
       title: "Login",
       href: frontendRoutes.login,
     },

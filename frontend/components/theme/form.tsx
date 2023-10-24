@@ -1,4 +1,4 @@
-import { FieldValues, Path, UseFormReturn } from "react-hook-form";
+import { FieldValues, UseFormReturn } from "react-hook-form";
 import React from "react";
 
 import { Button } from "@/components/ui/button";
@@ -9,15 +9,7 @@ import {
   CardDescription,
   CardContent,
 } from "@/components/ui/card";
-import {
-  Form,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormControl,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Form } from "@/components/ui/form";
 
 export interface ThemeFormProps<DataShape extends FieldValues> {
   title?: string;

@@ -14,9 +14,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { LoginFormData, loginFormSchema } from "@/types/login/form-schema";
-import { submitLoginData } from "@/services/login/on-submit";
-import { checkAuth } from "@/services/login/check-auth";
+import { LoginFormData, loginFormSchema } from "@/lib/types/login/form-schema";
+import { submitLoginData } from "@/lib/login/on-submit";
+import { checkAuth } from "@/lib/login/check-auth";
 
 export function MainForm() {
   const router = useRouter();

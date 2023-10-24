@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"backend/app/services/security"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -11,11 +12,13 @@ func Authenticate() gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		cookie, err := ctx.Request.Cookie("sessionToken")
 		if err != nil {
+			fmt.Println(err)
 			jsonUnauthorized(ctx)
 			return
 		}
 		payload, err := security.VerifyJWT(cookie.Value)
 		if err != nil {
+			fmt.Println(err)
 			jsonUnauthorized(ctx)
 			return
 		}

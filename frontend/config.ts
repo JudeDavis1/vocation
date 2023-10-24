@@ -1,3 +1,7 @@
+export interface BackendErrorResponse {
+  userError: string;
+}
+
 export class AppSettings {
   public static shared = new AppSettings();
 
@@ -9,6 +13,11 @@ export const backendRoutes = {
     create: AppSettings.shared.backendURL + "/user/create",
     login: AppSettings.shared.backendURL + "/user/login",
     get: AppSettings.shared.backendURL + "/user",
+  },
+  project: {
+    create: AppSettings.shared.backendURL + "/project/create",
+    delete: AppSettings.shared.backendURL + "/project/delete",
+    update: AppSettings.shared.backendURL + "/project/update",
   },
 };
 

@@ -2,15 +2,17 @@ package models
 
 import "gorm.io/gorm"
 
-type UserType int
+type UserType string
 
 const (
-	REGULAR UserType = iota
-	MANAGER
+	REGULAR UserType = "REGULAR"
+	MANAGER UserType = "MANAGER"
 )
 
 type User struct {
 	gorm.Model
+
+	ID uint `gorm:"primarykey"`
 
 	Firstname string
 	Lastname  string
@@ -22,8 +24,7 @@ type User struct {
 
 	AnnualLeaveDays int
 
-	CurrentProjects   []Project `gorm:"foreignKey:UserID"`
-	CompletedProjects []Project `gorm:"foreignKey:UserID"`
+	Projects []Project `gorm:"foreignKey:UserID"`
 }
 
 func (user *User) FullName() string {
