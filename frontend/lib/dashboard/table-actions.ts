@@ -2,7 +2,7 @@ import axios from "axios";
 import { isEqual } from "lodash";
 
 import { backendRoutes } from "@/config";
-import { Project } from "@/types/models/user";
+import { Project } from "@/lib/types/models/user";
 
 export async function updateProject(
   projectId: number,

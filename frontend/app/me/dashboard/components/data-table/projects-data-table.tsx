@@ -24,11 +24,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Project } from "@/types/models/user";
+import { Project } from "@/lib/types/models/user";
 import { Button } from "@/components/ui/button";
 import { backendErrorHandle } from "@/lib/utils/backend-error-handle";
 import { toast } from "@/components/ui/use-toast";
-import { deleteProject } from "@/services/dashboard/table-actions";
+import { deleteProject } from "@/lib/dashboard/table-actions";
 
 interface ProjectsDataTableProps {
   projects: Project[];

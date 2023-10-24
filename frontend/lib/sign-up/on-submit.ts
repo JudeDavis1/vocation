@@ -3,7 +3,7 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 
 import { backendRoutes, frontendRoutes } from "@/config";
 import { toast } from "@/components/ui/use-toast";
-import { SignUpFormData } from "@/types/sign-up/form-schema";
+import { SignUpFormData } from "@/lib/types/sign-up/form-schema";
 import { backendErrorHandle } from "@/lib/utils/backend-error-handle";
 
 export async function submitSignUpData(

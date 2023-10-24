@@ -5,8 +5,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 
 import { ThemeForm } from "@/components/theme/form";
-import { SignUpFormData, signUpFormSchema } from "@/types/sign-up/form-schema";
-import { submitSignUpData } from "@/services/sign-up/on-submit";
+import {
+  SignUpFormData,
+  signUpFormSchema,
+} from "@/lib/types/sign-up/form-schema";
+import { submitSignUpData } from "@/lib/sign-up/on-submit";
 import {
   FormControl,
   FormField,

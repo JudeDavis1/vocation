@@ -15,9 +15,9 @@ import { Button } from "@/components/ui/button";
 import {
   CreateProjectInput,
   createProjectSchema,
-} from "@/types/create-project/form-schema";
-import { submitProjectData } from "@/services/dashboard/create-project-form/on-submit";
-import { User } from "@/types/models/user";
+} from "@/lib/types/create-project/form-schema";
+import { submitProjectData } from "@/lib/dashboard/create-project-form/on-submit";
+import { User } from "@/lib/types/models/user";
 import { Textarea } from "@/components/ui/textarea";
 
 interface CreateProjectFormProps {

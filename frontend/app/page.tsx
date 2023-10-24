@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { Button, CircularProgress } from "@nextui-org/react";
 
 import { SiteHeader } from "@/app/site-header";
 import { TypingAnimation } from "@/components/animation/typing-animation";

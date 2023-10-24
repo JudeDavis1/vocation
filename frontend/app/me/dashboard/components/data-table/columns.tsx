@@ -12,15 +12,17 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Project, ProjectStatus } from "@/types/models/user";
+import { Project, ProjectStatus } from "@/lib/types/models/user";
 import { backendErrorHandle } from "@/lib/utils/backend-error-handle";
 import { toast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
-import {
-  updateProject,
-  deleteProject,
-} from "@/services/dashboard/table-actions";
+import { updateProject, deleteProject } from "@/lib/dashboard/table-actions";
 import { DataTableColumnHeader } from "@/components/data-table/column-header";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export const columns = (setReload: SetReloadState): ColumnDef<Project>[] => {
   return [
@@ -113,7 +115,16 @@ export const columns = (setReload: SetReloadState): ColumnDef<Project>[] => {
         <DataTableColumnHeader column={column} title="Title" />
       ),
       cell: ({ row }) => (
-        <div className="capitalize">{row.getValue("title")}</div>
+        <div className="text-xs">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <span className="capitalize line-clamp-2">
+                {row.getValue("title")}
+              </span>
+            </TooltipTrigger>
+            <TooltipContent>{row.getValue("title")}</TooltipContent>
+          </Tooltip>
+        </div>
       ),
     },
     {
@@ -121,7 +132,20 @@ export const columns = (setReload: SetReloadState): ColumnDef<Project>[] => {
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Description" />
       ),
-      cell: ({ row }) => <div>{row.getValue("description")}</div>,
+      cell: ({ row }) => (
+        <div className="text-xs">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <span className="capitalize line-clamp-2">
+                {row.getValue("description")}
+              </span>
+            </TooltipTrigger>
+            <TooltipContent className="w-64">
+              {row.getValue("description")}
+            </TooltipContent>
+          </Tooltip>
+        </div>
+      ),
     },
     {
       id: "actions",

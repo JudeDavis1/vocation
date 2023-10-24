@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import {
   CreateProjectInput,
   createProjectSchema,
-} from "@/types/create-project/form-schema";
+} from "@/lib/types/create-project/form-schema";
 import {
   Form,
   FormControl,
@@ -22,9 +22,9 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Project } from "@/types/models/user";
+import { Project } from "@/lib/types/models/user";
 import { Textarea } from "@/components/ui/textarea";
-import { updateProject } from "@/services/dashboard/table-actions";
+import { updateProject } from "@/lib/dashboard/table-actions";
 
 export interface EditProjectPopoverProps {
   project: Project;

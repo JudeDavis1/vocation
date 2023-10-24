@@ -1,7 +1,7 @@
 import axios, { AxiosError } from "axios";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 
-import { LoginFormData } from "@/types/login/form-schema";
+import { LoginFormData } from "@/lib/types/login/form-schema";
 import { toast } from "@/components/ui/use-toast";
 import { BackendErrorResponse, backendRoutes, frontendRoutes } from "@/config";
 import { backendErrorHandle } from "@/lib/utils/backend-error-handle";
