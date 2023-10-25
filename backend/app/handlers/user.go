@@ -7,6 +7,7 @@ import (
 	"backend/app/services/security"
 	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/mitchellh/mapstructure"
@@ -113,15 +114,23 @@ func LoginUser(ctx *gin.Context) {
 		return
 	}
 
-	ctx.SetCookie(
-		"sessionToken",
-		sessionToken,
-		0,
-		"/",
-		"",
-		false,
-		true,
-	)
+	environment := os.Getenv("ENVIRONMENT")
+
+	cookie := &http.Cookie{
+		Name:     "sessionToken",
+		Value:    sessionToken,
+		Path:     "/",
+		Domain:   "",
+		HttpOnly: true,
+	}
+
+	// If in production/dev environment, set the cookie to be Secure and SameSite=None
+	if environment != "local" {
+		cookie.Secure = true
+		cookie.SameSite = http.SameSiteNoneMode
+	}
+
+	http.SetCookie(ctx.Writer, cookie)
 
 	ctx.JSON(http.StatusAccepted, gin.H{
 		"userMsg": "Logged in!",
