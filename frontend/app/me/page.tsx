@@ -1,11 +1,7 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-
-import { frontendRoutes } from "@/config";
+import { Reroute } from "./reroute";
 
 export default function Page() {
-  const router = useRouter();
-  router.replace(frontendRoutes.me.dashboard);
-  return <>Redirecting</>;
+  return <Reroute />;
 }
