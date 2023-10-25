@@ -4,8 +4,11 @@ import { backendRoutes } from "@/config";
 import { User } from "@/lib/types/models/user";
 
 export async function getUserData(): Promise<User> {
-  const res = await axios.get(backendRoutes.user.get, {
+  const res = await axios({
+    url: backendRoutes.user.get,
+    method: "GET",
     withCredentials: true,
+    data: sessionStorage.getItem("sessionToken"),
   });
   return res.data as User;
 }

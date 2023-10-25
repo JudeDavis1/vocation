@@ -8,10 +8,10 @@ export interface KpiSectionProps {
 
 export function KpiSection({ projectInfo }: KpiSectionProps) {
   return (
-    <div className="p-8 space-y-4">
+    <div className="sm:p-8 p-4 space-y-4">
       <h1 className="text-2xl">KPIs for this week</h1>
 
-      <div className="flex gap-x-16">
+      <div className="sm:flex gap-x-16 space-y-6 sm:space-y-0">
         <ProgressItem
           value={projectInfo.completed}
           color="success"
