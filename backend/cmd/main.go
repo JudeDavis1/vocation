@@ -19,7 +19,6 @@ func main() {
 	err := godotenv.Load(".env.secret")
 	if err != nil {
 		fmt.Println(err)
-		return
 	}
 	DB_URL := os.Getenv("DB_URL")
 	fmt.Println("DB_URL")
