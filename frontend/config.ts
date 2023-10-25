@@ -5,7 +5,7 @@ export interface BackendErrorResponse {
 export class AppSettings {
   public static shared = new AppSettings();
 
-  public backendURL = "http://localhost:8080/api/v1";
+  public backendURL = `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1`;
 }
 
 export const backendRoutes = {

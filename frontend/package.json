@@ -4,9 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "bun run fix && next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "fix": "eslint --fix './**/*.{js,jsx,ts,tsx}' --ignore-pattern node_modules/"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.1",
