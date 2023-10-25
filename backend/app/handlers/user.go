@@ -133,6 +133,7 @@ func LoginUser(ctx *gin.Context) {
 	http.SetCookie(ctx.Writer, cookie)
 
 	ctx.JSON(http.StatusAccepted, gin.H{
-		"userMsg": "Logged in!",
+		"userMsg":      "Logged in!",
+		"sessionToken": sessionToken,
 	})
 }

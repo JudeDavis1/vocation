@@ -34,7 +34,7 @@ export function CreateProjectForm({
   });
 
   return (
-    <Card className="p-4 w-full sm:w-96">
+    <Card className="p-0 sm:p-4 w-full sm:w-96">
       <CardHeader>
         <CardTitle>Create a project</CardTitle>
       </CardHeader>
