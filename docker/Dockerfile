@@ -27,10 +27,10 @@ COPY ./backend/go.sum .
 RUN go mod download
 
 # Copy the source code into the container
-COPY ./ ./
+COPY ./backend ./
 
 # Expose port 8080 for the application
 EXPOSE 8080
 
-# Command to run the application with realize for hot reloading
+# Command to run the application with air for hot reloading
 CMD ["air"]
