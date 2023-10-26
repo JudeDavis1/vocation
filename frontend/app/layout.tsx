@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import { Providers } from "@/components/theme/next-ui-providers";
 
 export const metadata: Metadata = {
-  title: "Galactus",
+  title: "Vocation",
   description: "",
 
   themeColor: [
