@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 
 import { frontendRoutes } from "@/config";
 
-export function Reroute() {
+export function RerouteToDashboard() {
   const router = useRouter();
 
   React.useEffect(() => {

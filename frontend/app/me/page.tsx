@@ -1,7 +1,7 @@
 "use client";
 
-import { Reroute } from "./reroute";
+import { RerouteToDashboard } from "./rerouteto-dashboard";
 
 export default function Page() {
-  return <Reroute />;
+  return <RerouteToDashboard />;
 }
