@@ -6,7 +6,7 @@ import { frontendRoutes } from "@/config";
 
 export async function checkAuth(router: AppRouterInstance) {
   try {
-    getUserData();
+    await getUserData();
     router.push(frontendRoutes.me.dashboard);
   } catch (error) {}
 }
