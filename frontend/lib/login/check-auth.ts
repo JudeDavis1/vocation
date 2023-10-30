@@ -8,5 +8,7 @@ export async function checkAuth(router: AppRouterInstance) {
   try {
     await getUserData();
     router.push(frontendRoutes.me.dashboard);
-  } catch (error) {}
+  } catch (error) {
+    router.push(frontendRoutes.login);
+  }
 }
