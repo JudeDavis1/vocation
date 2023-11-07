@@ -25,7 +25,8 @@ spec:
         io.kompose.service: backend
     spec:
       containers:
-        - image: backend:latest
+        - image: judedavis92/vocation:latest
+          imagePullPolicy: Always
           name: backend
           ports:
             - containerPort: 8080
@@ -33,6 +34,8 @@ spec:
           volumeMounts:
             - mountPath: /root/app
               name: backend-claim0
+      imagePullSecrets:
+        - name: regcred
       restartPolicy: Always
       volumes:
         - name: backend-claim0
