@@ -24,6 +24,7 @@ func Authenticate() gin.HandlerFunc {
 
 			if err != nil {
 				// There was no cookie, nor sessionToken in the body
+				fmt.Println("[-] No cookie, no sessionToken, or invalid request.")
 				fmt.Println(err)
 				jsonUnauthorized(ctx)
 				return
@@ -37,6 +38,7 @@ func Authenticate() gin.HandlerFunc {
 
 		payload, err := security.VerifyJWT(sessionToken)
 		if err != nil {
+			fmt.Println("[-] Invalid session token")
 			fmt.Println(err)
 			jsonUnauthorized(ctx)
 			return
