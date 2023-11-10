@@ -7,7 +7,7 @@ import { ProjectsDataTable } from "./data-table/projects-data-table";
 import { KpiSection } from "./stats-section/kpi-section";
 
 import { User } from "@/lib/types/models/user";
-import { getUserData } from "@/lib/dashboard/fetch-user";
+import { getUserData } from "@/lib/fetch-user";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { KpiSectionSummaryItem } from "@/lib/types/project-stats/stats-section-summary";
 import { getProjectSummaryInfo } from "@/lib/kpi-section/get-project-summary-info";
