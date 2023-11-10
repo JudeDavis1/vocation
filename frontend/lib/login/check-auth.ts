@@ -10,9 +10,6 @@ export async function checkAuth(router: AppRouterInstance) {
     await getUserData();
     router.push(frontendRoutes.me.dashboard);
   } catch (error) {
-    toast({
-      title: "Error!",
-      description: error as string,
-    });
+    document.write(error as string);
   }
 }
