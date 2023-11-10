@@ -8,7 +8,7 @@ export async function getUserData(): Promise<User> {
     url: backendRoutes.user.get,
     method: "GET",
     withCredentials: true,
-    data: sessionStorage.getItem("sessionToken"),
+    data: localStorage.getItem("sessionToken"),
   });
   return res.data as User;
 }

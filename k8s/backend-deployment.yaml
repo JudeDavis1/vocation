@@ -32,7 +32,7 @@ spec:
             - containerPort: 8080
           resources: {}
           volumeMounts:
-            - mountPath: /root/app
+            - mountPath: /root
               name: backend-claim0
       imagePullSecrets:
         - name: regcred
