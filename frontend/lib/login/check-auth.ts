@@ -10,6 +10,6 @@ export async function checkAuth(router: AppRouterInstance) {
     router.push(frontendRoutes.me.dashboard);
   } catch (error: any) {
     const errResponse = error.response?.data as BackendErrorResponse;
-    document.write(errResponse.userError);
+    console.log(errResponse);
   }
 }

@@ -18,6 +18,7 @@ export async function submitSignUpData(
       description: "User successfully created.",
       variant: "success",
     });
+
     router.push(frontendRoutes.login);
   } catch (error) {
     backendErrorHandle(error);
