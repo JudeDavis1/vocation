@@ -1,5 +1,6 @@
 import axios from "axios";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+import Cookies from "js-cookie";
 
 import { LoginFormData } from "@/lib/types/login/form-schema";
 import { toast } from "@/components/ui/use-toast";
@@ -20,7 +21,8 @@ export async function submitLoginData(
       withCredentials: true,
     });
     const responseData = response.data as LoginResponse;
-    localStorage.setItem("sessionToken", responseData.sessionToken);
+
+    Cookies.set("sessionToken", responseData.sessionToken);
 
     toast({
       title: "Success!",
