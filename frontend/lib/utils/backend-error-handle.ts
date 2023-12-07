@@ -7,7 +7,6 @@ import { AxiosError } from "axios";
 import { z } from "zod";
 
 import { toast } from "@/components/ui/use-toast";
-import { BackendErrorResponse } from "@/config";
 
 export const backendErrorSchema = z.object({
   userError: z.string(),
