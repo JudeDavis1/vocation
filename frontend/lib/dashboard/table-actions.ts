@@ -23,11 +23,10 @@ export async function updateProject(
     return;
   }
 
-  await axios.patch(
-    backendRoutes.project.update,
-    { id: projectId, ...newProject },
-    { withCredentials: true }
-  );
+  await axios.patch(backendRoutes.project.update, {
+    id: projectId,
+    ...newProject,
+  });
   setReload(true);
 }
 
