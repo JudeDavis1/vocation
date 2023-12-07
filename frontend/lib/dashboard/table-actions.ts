@@ -23,18 +23,26 @@ export async function updateProject(
     return;
   }
 
-  await axios.patch(backendRoutes.project.update, {
-    id: projectId,
-    ...newProject,
-  });
+  const sessionToken = localStorage.getItem("sessionToken");
+
+  await axios.patch(
+    backendRoutes.project.update,
+    {
+      id: projectId,
+      ...newProject,
+    },
+    { headers: { Authorization: sessionToken } }
+  );
   setReload(true);
 }
 
 export async function deleteProject(project: Project) {
+  const sessionToken = localStorage.getItem("sessionToken");
   await axios({
     method: "delete",
     url: backendRoutes.project.delete,
     data: { id: project.id },
     withCredentials: true,
+    headers: { Authorization: sessionToken },
   });
 }

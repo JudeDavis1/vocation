@@ -9,12 +9,14 @@ export async function submitProjectData(
   data: CreateProjectInput,
   userId: string
 ) {
+  const sessionToken = localStorage.getItem("sessionToken");
   try {
     await axios.post(
       backendRoutes.project.create,
       { ...data, userId },
       {
         withCredentials: true,
+        headers: { Authorization: sessionToken },
       }
     );
     toast({
