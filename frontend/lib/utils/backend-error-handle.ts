@@ -4,9 +4,14 @@
  */
 
 import { AxiosError } from "axios";
+import { z } from "zod";
 
 import { toast } from "@/components/ui/use-toast";
 import { BackendErrorResponse } from "@/config";
+
+export const backendErrorSchema = z.object({
+  userError: z.string(),
+});
 
 export function backendErrorHandle(error: unknown) {
   if (!(error instanceof AxiosError)) {
@@ -18,10 +23,19 @@ export function backendErrorHandle(error: unknown) {
     return;
   }
 
-  const errResponse = error.response?.data as BackendErrorResponse;
+  const matchResult = backendErrorSchema.safeParse(error.response?.data);
+  if (!matchResult.success) {
+    toast({
+      title: "Error",
+      description: "Unknown error.",
+      variant: "destructive",
+    });
+    return;
+  }
+
   toast({
     title: "Error",
-    description: errResponse.userError,
+    description: matchResult.data.userError,
     variant: "destructive",
   });
 }
