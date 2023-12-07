@@ -1,6 +1,8 @@
 import axios from "axios";
 import { isEqual } from "lodash";
 
+import { requestOptions } from "../request-options";
+
 import { backendRoutes } from "@/config";
 import { Project } from "@/lib/types/models/user";
 
@@ -37,12 +39,10 @@ export async function updateProject(
 }
 
 export async function deleteProject(project: Project) {
-  const sessionToken = localStorage.getItem("sessionToken");
   await axios({
     method: "delete",
     url: backendRoutes.project.delete,
     data: { id: project.id },
-    withCredentials: true,
-    headers: { Authorization: sessionToken },
+    ...requestOptions,
   });
 }

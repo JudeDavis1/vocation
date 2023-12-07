@@ -13,7 +13,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Project, ProjectStatus } from "@/lib/types/models/user";
-import { backendErrorHandle } from "@/lib/utils/backend-error-handle";
+import { backendErrorHandle } from "@/lib/backend-error-handle";
 import { toast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
 import { updateProject, deleteProject } from "@/lib/dashboard/table-actions";
@@ -174,7 +174,11 @@ export const columns = (setReload: SetReloadState): ColumnDef<Project>[] => {
                       });
                       setReload(true);
                     } catch (error) {
-                      backendErrorHandle(error);
+                      toast({
+                        title: "Error",
+                        description: backendErrorHandle(error),
+                        variant: "destructive",
+                      });
                     }
                   }}
                   className="text-destructive"

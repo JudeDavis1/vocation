@@ -26,7 +26,7 @@ import {
 } from "@/components/ui/table";
 import { Project } from "@/lib/types/models/user";
 import { Button } from "@/components/ui/button";
-import { backendErrorHandle } from "@/lib/utils/backend-error-handle";
+import { backendErrorHandle } from "@/lib/backend-error-handle";
 import { toast } from "@/components/ui/use-toast";
 import { deleteProject } from "@/lib/dashboard/table-actions";
 
@@ -189,7 +189,11 @@ function RowDeleteButton({
             variant: "success",
           });
         } catch (error) {
-          backendErrorHandle(error);
+          toast({
+            title: "Error",
+            description: backendErrorHandle(error),
+            variant: "destructive",
+          });
         }
       }}
     >

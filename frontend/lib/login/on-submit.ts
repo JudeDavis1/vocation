@@ -4,7 +4,7 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 import { LoginFormData } from "@/lib/types/login/form-schema";
 import { toast } from "@/components/ui/use-toast";
 import { backendRoutes, frontendRoutes } from "@/config";
-import { backendErrorHandle } from "@/lib/utils/backend-error-handle";
+import { backendErrorHandle } from "@/lib/backend-error-handle";
 
 export interface LoginResponse {
   userMsg: string;
@@ -29,6 +29,10 @@ export async function submitLoginData(
     });
     router.push(frontendRoutes.me.dashboard);
   } catch (error) {
-    backendErrorHandle(error);
+    toast({
+      title: "Error",
+      description: backendErrorHandle(error),
+      variant: "destructive",
+    });
   }
 }

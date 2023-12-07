@@ -4,7 +4,7 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.share
 import { backendRoutes, frontendRoutes } from "@/config";
 import { toast } from "@/components/ui/use-toast";
 import { SignUpFormData } from "@/lib/types/sign-up/form-schema";
-import { backendErrorHandle } from "@/lib/utils/backend-error-handle";
+import { backendErrorHandle } from "@/lib/backend-error-handle";
 
 export async function submitSignUpData(
   data: SignUpFormData,
@@ -21,6 +21,10 @@ export async function submitSignUpData(
 
     router.push(frontendRoutes.login);
   } catch (error) {
-    backendErrorHandle(error);
+    toast({
+      title: "Error",
+      description: backendErrorHandle(error),
+      variant: "destructive",
+    });
   }
 }
