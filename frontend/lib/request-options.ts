@@ -1,3 +1,5 @@
+"use client";
+
 import { AxiosRequestConfig } from "axios";
 
 export const requestOptions: AxiosRequestConfig = {
