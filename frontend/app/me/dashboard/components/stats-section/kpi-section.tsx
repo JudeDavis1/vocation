@@ -1,3 +1,5 @@
+"use client";
+
 import { ProgressItem } from "./progress-item";
 
 import { KpiSectionSummaryItem } from "@/lib/types/project-stats/stats-section-summary";

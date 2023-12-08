@@ -1,3 +1,5 @@
+"use client";
+
 import axios from "axios";
 import { isEqual } from "lodash";
 
@@ -54,7 +56,7 @@ export async function deleteProject(project: Project) {
     method: "delete",
     url: backendRoutes.project.delete,
     data: { id: project.id },
-    ...requestOptions,
+    ...requestOptions(),
   });
 }
 
