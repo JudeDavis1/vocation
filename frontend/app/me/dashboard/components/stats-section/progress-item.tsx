@@ -1,3 +1,5 @@
+"use client";
+
 import { CircularProgress } from "@nextui-org/progress";
 import { CircularProgressVariantProps } from "@nextui-org/react";
 

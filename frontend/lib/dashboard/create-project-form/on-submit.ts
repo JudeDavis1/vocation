@@ -1,6 +1,6 @@
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 
-import { backendRoutes, BackendErrorResponse } from "@/config";
+import { backendRoutes } from "@/config";
 import { CreateProjectInput } from "@/lib/types/create-project/form-schema";
 import { toast } from "@/components/ui/use-toast";
 import { backendErrorHandle } from "@/lib/backend-error-handle";

@@ -1,5 +1,8 @@
+"use client";
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useDispatch, useSelector } from "react-redux";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -17,18 +20,14 @@ import {
   createProjectSchema,
 } from "@/lib/types/create-project/form-schema";
 import { submitProjectData } from "@/lib/dashboard/create-project-form/on-submit";
-import { User } from "@/lib/types/models/user";
 import { Textarea } from "@/components/ui/textarea";
+import { AppDispatch, RootState } from "@/lib/stores/root";
+import { getUserDataThunk } from "@/lib/stores/dashboard-user-data";
 
-interface CreateProjectFormProps {
-  userData?: User;
-  setReload: SetReloadState;
-}
+export function CreateProjectForm() {
+  const dispatch: AppDispatch = useDispatch();
+  const state = useSelector((state: RootState) => state.dashboardUserData);
 
-export function CreateProjectForm({
-  userData,
-  setReload,
-}: CreateProjectFormProps) {
   const form = useForm<CreateProjectInput>({
     resolver: zodResolver(createProjectSchema),
   });
@@ -42,10 +41,10 @@ export function CreateProjectForm({
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(async (data) => {
-              if (userData) {
-                await submitProjectData(data, String(userData.id));
+              if (state.userData) {
+                await submitProjectData(data, String(state.userData.id));
               }
-              setReload(true);
+              dispatch(getUserDataThunk());
             })}
             className="space-y-6"
           >
