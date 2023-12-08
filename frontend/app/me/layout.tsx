@@ -4,19 +4,13 @@ import "@/app/globals.css";
 
 import { MeNavBar } from "./navbar";
 
-import { ThemeProvider } from "@/components/theme/provider";
+import { Providers } from "@/components/providers/provider";
 import { Toaster } from "@/components/ui/toaster";
-import { Providers } from "@/components/theme/next-ui-providers";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
 export default function ({ children }: { children: React.ReactNode }) {
   return (
-    <ThemeProvider
-      attribute="class"
-      defaultTheme="dark"
-      enableSystem
-      disableTransitionOnChange
-    >
+    <Providers>
       <TooltipProvider>
         <div className="relative flex min-h-screen flex-col">
           {/* SITE HEADER */}
@@ -27,6 +21,6 @@ export default function ({ children }: { children: React.ReactNode }) {
           <Toaster />
         </div>
       </TooltipProvider>
-    </ThemeProvider>
+    </Providers>
   );
 }
