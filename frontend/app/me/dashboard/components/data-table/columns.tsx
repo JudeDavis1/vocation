@@ -1,3 +1,5 @@
+"use client";
+
 import { ColumnDef } from "@tanstack/react-table";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import React from "react";
@@ -23,8 +25,10 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { AppDispatch } from "@/lib/stores/root";
+import { getUserDataThunk } from "@/lib/stores/dashboard-user-data";
 
-export const columns = (setReload: SetReloadState): ColumnDef<Project>[] => {
+export const columns = (dispatch: AppDispatch): ColumnDef<Project>[] => {
   return [
     {
       id: "select",
@@ -88,7 +92,7 @@ export const columns = (setReload: SetReloadState): ColumnDef<Project>[] => {
                           row.original.id,
                           { status: projectStatus },
                           row.original,
-                          setReload
+                          dispatch
                         )
                       }
                     >
@@ -153,7 +157,7 @@ export const columns = (setReload: SetReloadState): ColumnDef<Project>[] => {
       cell: ({ row }) => {
         return (
           <div className="space-x-4">
-            <EditProjectPopover project={row.original} setReload={setReload} />
+            <EditProjectPopover project={row.original} />
 
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -172,7 +176,7 @@ export const columns = (setReload: SetReloadState): ColumnDef<Project>[] => {
                         description: `Successfully deleted ${row.original.title}.`,
                         variant: "success",
                       });
-                      setReload(true);
+                      dispatch(getUserDataThunk());
                     } catch (error) {
                       toast({
                         title: "Error",

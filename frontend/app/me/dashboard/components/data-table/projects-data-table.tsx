@@ -12,6 +12,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { Loader } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
 
 import { columns } from "./columns";
 
@@ -26,21 +27,13 @@ import {
 } from "@/components/ui/table";
 import { Project } from "@/lib/types/models/user";
 import { Button } from "@/components/ui/button";
-import { backendErrorHandle } from "@/lib/backend-error-handle";
-import { toast } from "@/components/ui/use-toast";
-import { deleteProject } from "@/lib/dashboard/table-actions";
+import { deleteBatchAndUpdate } from "@/lib/dashboard/table-actions";
+import { AppDispatch, RootState } from "@/lib/stores/root";
 
-interface ProjectsDataTableProps {
-  projects: Project[];
-  reload: boolean;
-  setReload: SetReloadState;
-}
+export function ProjectsDataTable() {
+  const dispatch = useDispatch();
+  const state = useSelector((state: RootState) => state.dashboardUserData);
 
-export function ProjectsDataTable({
-  projects,
-  reload,
-  setReload,
-}: ProjectsDataTableProps) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
@@ -52,8 +45,8 @@ export function ProjectsDataTable({
   >({});
 
   const table = useReactTable<Project>({
-    data: projects,
-    columns: columns(setReload),
+    data: state.userData?.projects ?? [],
+    columns: columns(dispatch),
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -82,11 +75,7 @@ export function ProjectsDataTable({
           className="max-w-sm"
         />
         {Object.keys(rowSelection).length ? (
-          <RowDeleteButton
-            projects={projects}
-            rowSelection={rowSelection}
-            setReload={setReload}
-          />
+          <RowDeleteButton rowSelection={rowSelection} />
         ) : (
           <></>
         )}
@@ -134,7 +123,7 @@ export function ProjectsDataTable({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  {reload ? (
+                  {state.isLoading ? (
                     <Loader className="animate-spin" />
                   ) : (
                     <>No results.</>
@@ -156,46 +145,17 @@ export function ProjectsDataTable({
 }
 
 interface RowDeleteButton {
-  projects: Project[];
   rowSelection: Record<number, boolean>;
-  setReload: SetReloadState;
 }
 
-function RowDeleteButton({
-  projects,
-  rowSelection,
-  setReload,
-}: RowDeleteButton) {
+function RowDeleteButton({ rowSelection }: RowDeleteButton) {
+  const dispatch: AppDispatch = useDispatch();
+  const state = useSelector((state: RootState) => state.dashboardUserData);
+
   return (
     <Button
       variant="destructive"
-      onClick={async () => {
-        // Get selected keys and delete the associated project(s)
-        try {
-          await Promise.all(
-            Object.keys(rowSelection).map(async (item) => {
-              const idx = parseInt(item);
-              const project = projects[idx];
-
-              return deleteProject(project);
-            })
-          );
-          setReload(true);
-          toast({
-            title: "Success",
-            description: `Successfully deleted ${
-              Object.keys(rowSelection).length
-            } Project(s)`,
-            variant: "success",
-          });
-        } catch (error) {
-          toast({
-            title: "Error",
-            description: backendErrorHandle(error),
-            variant: "destructive",
-          });
-        }
-      }}
+      onClick={() => deleteBatchAndUpdate(state, rowSelection, dispatch)}
     >
       Delete
     </Button>

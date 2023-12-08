@@ -2,6 +2,7 @@ import { Edit } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
+import { useDispatch } from "react-redux";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -25,16 +26,13 @@ import {
 import { Project } from "@/lib/types/models/user";
 import { Textarea } from "@/components/ui/textarea";
 import { updateProject } from "@/lib/dashboard/table-actions";
+import { AppDispatch } from "@/lib/stores/root";
 
 export interface EditProjectPopoverProps {
   project: Project;
-  setReload: SetReloadState;
 }
 
-export function EditProjectPopover({
-  project,
-  setReload,
-}: EditProjectPopoverProps) {
+export function EditProjectPopover({ project }: EditProjectPopoverProps) {
   return (
     <Popover>
       <PopoverTrigger>
@@ -46,7 +44,7 @@ export function EditProjectPopover({
         </Button>
       </PopoverTrigger>
       <PopoverContent>
-        <EditProjectForm project={project} setReload={setReload} />
+        <EditProjectForm project={project} />
       </PopoverContent>
     </Popover>
   );
@@ -54,10 +52,10 @@ export function EditProjectPopover({
 
 interface EditProjectFormProps {
   project: Project;
-  setReload: SetReloadState;
 }
 
-export function EditProjectForm({ project, setReload }: EditProjectFormProps) {
+export function EditProjectForm({ project }: EditProjectFormProps) {
+  const dispatch: AppDispatch = useDispatch();
   const form = useForm<CreateProjectInput>({
     resolver: zodResolver(createProjectSchema),
     defaultValues: {
@@ -71,7 +69,7 @@ export function EditProjectForm({ project, setReload }: EditProjectFormProps) {
       <form
         className="space-y-6"
         onSubmit={form.handleSubmit(async (data) => {
-          updateProject(project.id, data, project, setReload);
+          updateProject(project.id, data, project, dispatch);
         })}
       >
         <FormField
