@@ -71,7 +71,7 @@ function EditProjectForm({ project }: EditProjectFormProps) {
       <form
         className="space-y-6"
         onSubmit={form.handleSubmit(async (data) => {
-          updateProject(project.id, data, project, dispatch);
+          await updateProject(project.id, data, project, dispatch);
         })}
       >
         <FormField

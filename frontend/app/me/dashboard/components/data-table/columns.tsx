@@ -1,6 +1,6 @@
 "use client";
 
-import { ColumnDef } from "@tanstack/react-table";
+import { ColumnDef, Row } from "@tanstack/react-table";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import React from "react";
 
@@ -54,64 +54,7 @@ export const columns = (dispatch: AppDispatch): ColumnDef<Project>[] => {
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Status" />
       ),
-      cell: ({ row }) => {
-        const statusColorMap: Record<keyof typeof ProjectStatus, string> = {
-          NOT_STARTED: "bg-gray-700",
-          IN_PROGRESS: "bg-blue-500",
-          COMPLETED: "bg-green-800",
-        };
-        const textMap: Record<keyof typeof ProjectStatus, string> = {
-          NOT_STARTED: "Not Started",
-          IN_PROGRESS: "In Progress",
-          COMPLETED: "Completed",
-        };
-
-        return (
-          <div className="capitalize">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <span
-                  className={cn(
-                    statusColorMap[row.original.status],
-                    "text-white p-2 rounded-lg hover:cursor-pointer"
-                  )}
-                >
-                  {textMap[row.original.status]}
-                </span>
-              </DropdownMenuTrigger>
-
-              <DropdownMenuContent>
-                {Object.keys(textMap).map((keyString, i) => {
-                  const projectStatus = keyString as keyof typeof ProjectStatus;
-                  return (
-                    <DropdownMenuItem
-                      key={i}
-                      className="hover:cursor-pointer"
-                      onClick={() =>
-                        updateProject(
-                          row.original.id,
-                          { status: projectStatus },
-                          row.original,
-                          dispatch
-                        )
-                      }
-                    >
-                      <span
-                        className={cn(
-                          statusColorMap[projectStatus],
-                          "text-white p-2 rounded-lg"
-                        )}
-                      >
-                        {textMap[projectStatus]}
-                      </span>
-                    </DropdownMenuItem>
-                  );
-                })}
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-        );
-      },
+      cell: ({ row }) => <StatusRow row={row} dispatch={dispatch} />,
     },
     {
       accessorKey: "title",
@@ -197,3 +140,67 @@ export const columns = (dispatch: AppDispatch): ColumnDef<Project>[] => {
     },
   ];
 };
+
+interface StatusRowProps {
+  row: Row<Project>;
+  dispatch: AppDispatch;
+}
+
+function StatusRow({ row, dispatch }: StatusRowProps) {
+  const statusColorMap: Record<keyof typeof ProjectStatus, string> = {
+    NOT_STARTED: "bg-gray-700",
+    IN_PROGRESS: "bg-blue-500",
+    COMPLETED: "bg-green-800",
+  };
+  const textMap: Record<keyof typeof ProjectStatus, string> = {
+    NOT_STARTED: "Not Started",
+    IN_PROGRESS: "In Progress",
+    COMPLETED: "Completed",
+  };
+
+  return (
+    <div className="capitalize">
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <span
+            className={cn(
+              statusColorMap[row.original.status],
+              "text-white p-2 rounded-lg hover:cursor-pointer"
+            )}
+          >
+            {textMap[row.original.status]}
+          </span>
+        </DropdownMenuTrigger>
+
+        <DropdownMenuContent>
+          {Object.keys(textMap).map((keyString, i) => {
+            const projectStatus = keyString as keyof typeof ProjectStatus;
+            return (
+              <DropdownMenuItem
+                key={i}
+                className="hover:cursor-pointer"
+                onClick={() =>
+                  updateProject(
+                    row.original.id,
+                    { status: projectStatus },
+                    row.original,
+                    dispatch
+                  )
+                }
+              >
+                <span
+                  className={cn(
+                    statusColorMap[projectStatus],
+                    "text-white p-2 rounded-lg"
+                  )}
+                >
+                  {textMap[projectStatus]}
+                </span>
+              </DropdownMenuItem>
+            );
+          })}
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
+  );
+}
