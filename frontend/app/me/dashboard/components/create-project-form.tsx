@@ -24,30 +24,23 @@ import { Textarea } from "@/components/ui/textarea";
 import { AppDispatch, RootState } from "@/lib/stores/root";
 import { getUserDataThunk } from "@/lib/stores/dashboard-user-data";
 
-export function CreateProjectForm() {
-  const dispatch: AppDispatch = useDispatch();
-  const state = useSelector((state: RootState) => state.dashboardUserData);
+interface CreateProjectFormProps {
+  onSubmit: (data: CreateProjectInput) => void;
+}
 
+export function CreateProjectForm({ onSubmit }: CreateProjectFormProps) {
   const form = useForm<CreateProjectInput>({
     resolver: zodResolver(createProjectSchema),
   });
 
   return (
-    <Card className="p-0 sm:p-4 w-full sm:w-96">
+    <Card className="w-full border-none">
       <CardHeader>
         <CardTitle>Create a project</CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(async (data) => {
-              if (state.userData) {
-                await submitProjectData(data, String(state.userData.id));
-              }
-              dispatch(getUserDataThunk());
-            })}
-            className="space-y-6"
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
               control={form.control}
               name="title"

@@ -1,23 +1,19 @@
 "use client";
 
-import Link from "next/link";
 import React from "react";
+import {
+  Link,
+  Navbar,
+  NavbarContent,
+  NavbarMenu,
+  NavbarMenuItem,
+  NavbarMenuToggle,
+} from "@nextui-org/react";
 
-import {
-  NavigationMenu,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu";
 import { frontendRoutes } from "@/config";
-import {
-  NavMenuItem,
-  NavMenuItemProps,
-} from "@/components/theme/nav-menu-item";
 
 export function SiteHeader() {
-  const rightMenuItems: NavMenuItemProps[] = [
+  const rightMenuItems = [
     {
       title: "Home",
       href: "/",
@@ -32,14 +28,30 @@ export function SiteHeader() {
     },
   ];
   return (
-    <div className="p-4 flex justify-end">
-      <NavigationMenu className="ml-auto">
-        <NavigationMenuList>
-          {rightMenuItems.map((item: NavMenuItemProps, i) => (
-            <NavMenuItem title={item.title} href={item.href} key={i} />
+    <div className="p-4 w-full">
+      <Navbar className="ml-auto w-full" isBordered>
+        <NavbarContent justify="start" className="sm:hidden">
+          <NavbarMenuToggle />
+        </NavbarContent>
+        <NavbarContent className="hidden sm:flex" justify="start">
+          {rightMenuItems.map((item, i) => (
+            <Link href={item.href} key={i}>
+              {item.title}
+            </Link>
           ))}
-        </NavigationMenuList>
-      </NavigationMenu>
+        </NavbarContent>
+
+        <NavbarMenu>
+          <br />
+          {rightMenuItems.map((item, i) => (
+            <NavbarMenuItem>
+              <Link href={item.href} key={i}>
+                {item.title}
+              </Link>
+            </NavbarMenuItem>
+          ))}
+        </NavbarMenu>
+      </Navbar>
     </div>
   );
 }

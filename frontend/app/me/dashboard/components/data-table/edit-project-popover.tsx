@@ -56,7 +56,7 @@ interface EditProjectFormProps {
   project: Project;
 }
 
-export function EditProjectForm({ project }: EditProjectFormProps) {
+function EditProjectForm({ project }: EditProjectFormProps) {
   const dispatch: AppDispatch = useDispatch();
   const form = useForm<CreateProjectInput>({
     resolver: zodResolver(createProjectSchema),

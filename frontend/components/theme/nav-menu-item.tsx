@@ -1,25 +1,15 @@
-import Link from "next/link";
 import React from "react";
+import { NavbarItem, Link } from "@nextui-org/react";
 
-import {
-  NavigationMenuItem,
-  NavigationMenuLink,
-  navigationMenuTriggerStyle,
-} from "../ui/navigation-menu";
-
-export interface NavMenuItemProps {
+export interface TypicalMenuItemProps {
   title: string;
   href: string;
 }
 
-export function NavMenuItem({ title, href }: NavMenuItemProps) {
+export function TypicalMenuItem({ title, href }: TypicalMenuItemProps) {
   return (
-    <NavigationMenuItem key={React.useId()}>
-      <Link href={href} legacyBehavior passHref>
-        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-          {title}
-        </NavigationMenuLink>
-      </Link>
-    </NavigationMenuItem>
+    <NavbarItem key={React.useId()} className="p-4">
+      <Link href={href}>{title}</Link>
+    </NavbarItem>
   );
 }

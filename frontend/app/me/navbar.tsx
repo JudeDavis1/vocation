@@ -1,32 +1,71 @@
 import Image from "next/image";
-
 import {
-  NavigationMenu,
-  NavigationMenuList,
-} from "@/components/ui/navigation-menu";
-import { NavMenuItem } from "@/components/theme/nav-menu-item";
+  Navbar,
+  NavbarBrand,
+  NavbarContent,
+  NavbarItem,
+  Button,
+  NavbarMenuToggle,
+  NavbarMenu,
+  NavbarMenuItem,
+  Link,
+} from "@nextui-org/react";
+import React from "react";
+
 import { ModeToggle } from "@/components/theme/mode-toggle";
 
 export function MeNavBar() {
+  const menuItems = [
+    {
+      href: "",
+      title: "Explore",
+    },
+    {
+      href: "",
+      title: "Monitor",
+    },
+  ];
   return (
     <div className="p-2">
-      <NavigationMenu>
-        <Image
-          src={"/favicon.png"}
-          width={100}
-          height={100}
-          alt=""
-          className="p-4"
-        />
-        <h1 className="select-none px-8 text-muted-foreground">Dashboard</h1>
-        <NavigationMenuList>
-          <div className="space-x-4 flex">
-            <NavMenuItem href="" title="Explore" />
-            <NavMenuItem href="" title="Monitor" />
-            <ModeToggle />
-          </div>
-        </NavigationMenuList>
-      </NavigationMenu>
+      <Navbar isBordered>
+        <NavbarContent className="sm:hidden" justify="start">
+          <NavbarMenuToggle />
+        </NavbarContent>
+
+        <NavbarContent justify="center">
+          <NavbarBrand>
+            <Image
+              src={"/favicon.png"}
+              layout="fixed"
+              width={70}
+              height={70}
+              alt=""
+              className="p-4 min-w-[70px] min-h-[70px]"
+            />
+          </NavbarBrand>
+        </NavbarContent>
+
+        <NavbarContent className="hidden sm:flex" justify="start">
+          {menuItems.map((item) => (
+            <NavbarItem key={item.title}>
+              <Link href={item.href}>{item.title}</Link>
+            </NavbarItem>
+          ))}
+        </NavbarContent>
+        <span className="p-4">
+          <ModeToggle />
+        </span>
+        <NavbarMenu>
+          <br />
+          {menuItems.map((item) => (
+            <NavbarMenuItem key={item.title}>
+              <Link size="lg" href={item.href}>
+                {item.title}
+              </Link>
+            </NavbarMenuItem>
+          ))}
+        </NavbarMenu>
+      </Navbar>
     </div>
   );
 }
