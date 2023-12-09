@@ -18,6 +18,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { submitProjectData } from "@/lib/dashboard/create-project-form/on-submit";
+import { CreateProjectInput } from "@/lib/types/create-project/form-schema";
 
 export function SummarySection() {
   const dispatch: AppDispatch = useDispatch();
@@ -52,6 +53,17 @@ function CreateProjectPopover() {
   const dispatch: AppDispatch = useDispatch();
   const state = useSelector((state: RootState) => state.dashboardUserData);
 
+  const onSubmit = React.useCallback(
+    async (data: CreateProjectInput) => {
+      if (state.userData) {
+        await submitProjectData(data, String(state.userData.id));
+      }
+      dispatch(getUserDataThunk());
+      setIsOpen(false);
+    },
+    [state.userData, dispatch, setIsOpen]
+  );
+
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
@@ -60,15 +72,7 @@ function CreateProjectPopover() {
         </Button>
       </PopoverTrigger>
       <PopoverContent align="start" className="p-0">
-        <CreateProjectForm
-          onSubmit={async (data) => {
-            if (state.userData) {
-              await submitProjectData(data, String(state.userData.id));
-            }
-            dispatch(getUserDataThunk());
-            setIsOpen(false);
-          }}
-        />
+        <CreateProjectForm onSubmit={onSubmit} />
       </PopoverContent>
     </Popover>
   );

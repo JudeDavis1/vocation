@@ -2,7 +2,6 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useDispatch, useSelector } from "react-redux";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -19,10 +18,7 @@ import {
   CreateProjectInput,
   createProjectSchema,
 } from "@/lib/types/create-project/form-schema";
-import { submitProjectData } from "@/lib/dashboard/create-project-form/on-submit";
 import { Textarea } from "@/components/ui/textarea";
-import { AppDispatch, RootState } from "@/lib/stores/root";
-import { getUserDataThunk } from "@/lib/stores/dashboard-user-data";
 
 interface CreateProjectFormProps {
   onSubmit: (data: CreateProjectInput) => void;
