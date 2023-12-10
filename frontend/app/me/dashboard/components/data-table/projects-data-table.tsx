@@ -14,7 +14,7 @@ import {
 import { Loader } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { columns } from "./columns";
+import { ProjectRow, columns } from "./columns";
 
 import { Input } from "@/components/ui/input";
 import {
@@ -25,12 +25,14 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Project } from "@/lib/types/models/user";
 import { Button } from "@/components/ui/button";
 import { deleteBatchAndUpdate } from "@/lib/dashboard/table-actions";
 import { AppDispatch, RootState } from "@/lib/stores/root";
+import { useScreenWidth } from "@/lib/hooks/screen-width";
 
 export function ProjectsDataTable() {
+  const { isSmall } = useScreenWidth();
+
   const dispatch = useDispatch();
   const state = useSelector((state: RootState) => state.dashboardUserData);
 
@@ -44,9 +46,20 @@ export function ProjectsDataTable() {
     Record<number, boolean>
   >({});
 
-  const table = useReactTable<Project>({
+  const tableCols = React.useMemo(() => {
+    // Remove the descriptions col if the screen is too small
+    let cols = columns(dispatch, state);
+    if (isSmall) {
+      const omittedCols = ["description", "select"];
+      cols = cols.filter((col) => !omittedCols.includes(col.id ?? ""));
+    }
+
+    return cols;
+  }, [isSmall, state.editingProject]);
+
+  const table = useReactTable<ProjectRow>({
     data: state.userData?.projects ?? [],
-    columns: columns(dispatch),
+    columns: tableCols,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
@@ -80,60 +93,53 @@ export function ProjectsDataTable() {
           <></>
         )}
       </div>
-      <div className="rounded-md border overflow-x-auto">
-        <Table>
-          <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
+      <Table className="rounded-md border overflow-x-auto">
+        <TableHeader>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <TableRow key={headerGroup.id}>
+              {headerGroup.headers.map((header) => {
+                return (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
+                );
+              })}
+            </TableRow>
+          ))}
+        </TableHeader>
+        <TableBody>
+          {table.getRowModel().rows?.length ? (
+            table.getRowModel().rows.map((row) => (
+              <TableRow
+                key={row.id}
+                data-state={row.getIsSelected() && "selected"}
+              >
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell key={cell.id}>
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
               </TableRow>
-            ))}
-          </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                  {state.isLoading ? (
-                    <Loader className="animate-spin" />
-                  ) : (
-                    <>No results.</>
-                  )}
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
-        </Table>
-      </div>
+            ))
+          ) : (
+            <TableRow>
+              <TableCell colSpan={columns.length} className="h-24 text-center">
+                {state.isLoading ? (
+                  <Loader className="animate-spin" />
+                ) : (
+                  <>No results.</>
+                )}
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+
       <div className="flex items-center justify-end space-x-2 py-4">
         <div className="flex-1 text-sm text-muted-foreground">
           {table.getFilteredSelectedRowModel().rows.length} of{" "}

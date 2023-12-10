@@ -1,7 +1,7 @@
 "use client";
 
 import { Edit } from "lucide-react";
-import { useForm } from "react-hook-form";
+import { UseFormReturn, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { useDispatch } from "react-redux";
@@ -29,34 +29,20 @@ import { Project } from "@/lib/types/models/user";
 import { Textarea } from "@/components/ui/textarea";
 import { updateProject } from "@/lib/dashboard/table-actions";
 import { AppDispatch } from "@/lib/stores/root";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export interface EditProjectPopoverProps {
   project: Project;
 }
 
 export function EditProjectPopover({ project }: EditProjectPopoverProps) {
-  return (
-    <Popover>
-      <PopoverTrigger>
-        <Button variant="secondary" className="gap-x-2">
-          <>
-            <Edit size={17} />
-            Edit
-          </>
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent>
-        <EditProjectForm project={project} />
-      </PopoverContent>
-    </Popover>
-  );
-}
-
-interface EditProjectFormProps {
-  project: Project;
-}
-
-function EditProjectForm({ project }: EditProjectFormProps) {
   const dispatch: AppDispatch = useDispatch();
   const form = useForm<CreateProjectInput>({
     resolver: zodResolver(createProjectSchema),
@@ -67,13 +53,38 @@ function EditProjectForm({ project }: EditProjectFormProps) {
   });
 
   return (
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <div className="flex">
+          Edit <Edit size={14} className="flex justify-end ml-auto" />
+        </div>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <EditProjectForm form={form} />
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction
+            onClick={async () => {
+              const data = form.getValues();
+              await updateProject(project.id, data, project, dispatch);
+            }}
+          >
+            Continue
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+}
+
+interface EditProjectFormProps {
+  form: UseFormReturn<CreateProjectInput>;
+}
+
+function EditProjectForm({ form }: EditProjectFormProps) {
+  return (
     <Form {...form}>
-      <form
-        className="space-y-6"
-        onSubmit={form.handleSubmit(async (data) => {
-          await updateProject(project.id, data, project, dispatch);
-        })}
-      >
+      <form className="space-y-6">
         <FormField
           control={form.control}
           name="title"
@@ -105,13 +116,6 @@ function EditProjectForm({ project }: EditProjectFormProps) {
             </FormItem>
           )}
         />
-
-        <Button type="submit" className="gap-x-2 flex justify-end ml-auto">
-          <>
-            <Edit size={17} />
-            Edit
-          </>
-        </Button>
       </form>
     </Form>
   );
