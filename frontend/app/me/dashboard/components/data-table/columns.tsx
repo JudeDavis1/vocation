@@ -30,6 +30,7 @@ import {
   getUserDataThunk,
 } from "@/lib/stores/dashboard-user-data";
 import { Input } from "@/components/ui/input";
+import { createProjectSchema } from "@/lib/types/create-project/form-schema";
 
 export type ProjectRow = Project;
 
@@ -232,6 +233,17 @@ function ActionsRow({ row, dispatch, state }: RowProps) {
 
   const onUpdate = React.useCallback(async () => {
     if (state.editingProject?.id === undefined) {
+      return;
+    }
+
+    // Ensure the project matches the schema requirements
+    const parseResult = createProjectSchema.safeParse(state.editingProject);
+    if (!parseResult.success) {
+      toast({
+        title: "Error",
+        description: parseResult.error.errors[0].message,
+        variant: "destructive",
+      });
       return;
     }
 
