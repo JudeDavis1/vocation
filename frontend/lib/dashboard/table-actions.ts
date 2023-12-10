@@ -39,7 +39,6 @@ export async function updateProject(
   }
 
   const sessionToken = localStorage.getItem("sessionToken");
-
   await axios.patch(
     backendRoutes.project.update,
     {

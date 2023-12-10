@@ -7,7 +7,7 @@
 import React from "react";
 
 export interface UseScreenWidthReturn {
-  isSmall: boolean;
+  isSmall?: boolean;
 }
 
 export function useScreenWidth(): UseScreenWidthReturn {
@@ -22,6 +22,8 @@ export function useScreenWidth(): UseScreenWidthReturn {
 
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  if (isSmall === undefined) return { isSmall: false };
 
   return { isSmall };
 }

@@ -23,7 +23,7 @@ export default function ({ children }: RootLayoutProps) {
   return (
     <html lang="en">
       <head />
-      <body className={cn("min-h-screen bg-background font-sans p-4")}>
+      <body className={cn("min-h-screen bg-background font-sans p-1")}>
         <Providers>
           <div className="relative flex min-h-screen flex-col">
             {/* SITE HEADER */}
