@@ -74,15 +74,16 @@ export const columns = (
     ),
     cell: ({ row }) => {
       const isEditing = state.editingProject?.id === row.original.id;
+      const defaultValue = isEditing
+        ? state.editingProject?.title
+        : row.original.title;
       return (
         <div className="text-xs">
           <Tooltip>
             <TooltipTrigger asChild>
               <Input
                 className="capitalize line-clamp-2"
-                defaultValue={
-                  isEditing ? state.editingProject?.title : row.original.title
-                }
+                defaultValue={defaultValue}
                 disabled={!isEditing}
                 onBlur={(e) =>
                   dispatch(
@@ -108,17 +109,16 @@ export const columns = (
     ),
     cell: ({ row }) => {
       const isEditing = state.editingProject?.id === row.original.id;
+      const defaultValue = isEditing
+        ? state.editingProject?.description
+        : row.original.description;
       return (
         <div className="text-xs">
           <Tooltip>
             <TooltipTrigger asChild>
               <Input
                 className="capitalize line-clamp-2"
-                defaultValue={
-                  isEditing
-                    ? state.editingProject?.description
-                    : row.original.description
-                }
+                defaultValue={defaultValue}
                 disabled={!isEditing}
                 onBlur={(e) =>
                   dispatch(
@@ -290,18 +290,19 @@ function ActionsRow({ row, dispatch, state }: RowProps) {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start">
             <DropdownMenuItem
+              onClick={(e) => dispatch(setEditingProject(row.original))}
+            >
+              <div className="flex justify-between items-center w-full">
+                <span>Edit</span>
+                <Edit size={14} />
+              </div>
+            </DropdownMenuItem>
+
+            <DropdownMenuItem
               onClick={onDeleteProject}
               className="text-destructive"
             >
               Delete
-            </DropdownMenuItem>
-
-            <DropdownMenuItem
-              onClick={(e) => dispatch(setEditingProject(row.original))}
-            >
-              <div className="flex">
-                Edit <Edit size={14} className="flex justify-end ml-auto" />
-              </div>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
