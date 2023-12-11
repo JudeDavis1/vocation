@@ -9,9 +9,11 @@ export interface DashboardUserDataState {
   isLoading: boolean;
   errorMsg?: string;
 
-  // Id of the project being edited
+  // Project being edited
   // If undefined, none are being edited
-  editingProject?: Partial<Project>;
+  editingProjectId?: Project["id"];
+  // Actual edits being applied to the project
+  projectEdits?: Partial<Project>;
 }
 
 interface UpdateUserProjectPayload {
@@ -38,11 +40,17 @@ export const dashboardUserDataSlice = createSlice({
   name: "dashboard-user-data",
   initialState,
   reducers: {
-    setEditingProject: (
+    setEditingProjectId: (
+      state,
+      action: PayloadAction<Project["id"] | undefined>
+    ) => {
+      state.editingProjectId = action.payload;
+    },
+    setProjectEdits: (
       state,
       action: PayloadAction<Partial<Project> | undefined>
     ) => {
-      state.editingProject = action.payload;
+      state.projectEdits = action.payload;
     },
     updateUserProject: (
       state,

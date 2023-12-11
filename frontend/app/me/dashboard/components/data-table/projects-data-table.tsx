@@ -3,12 +3,10 @@
 import React from "react";
 import {
   ColumnFiltersState,
-  SortingState,
   VisibilityState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
-  getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 import { Loader } from "lucide-react";
@@ -26,17 +24,31 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { deleteBatchAndUpdate } from "@/lib/dashboard/table-actions";
+import {
+  deleteBatchAndUpdate,
+  isEditingRow,
+  onEditCancel,
+  onInputChange,
+  onProjectEdit,
+  onUpdateProject,
+  updateStatus,
+} from "@/lib/dashboard/table-actions";
 import { AppDispatch, RootState } from "@/lib/stores/root";
 import { useScreenWidth } from "@/lib/hooks/screen-width";
+import { Project } from "@/lib/types/models/user";
 
 export function ProjectsDataTable() {
   const { isSmall } = useScreenWidth();
 
-  const dispatch = useDispatch();
+  const dispatch: AppDispatch = useDispatch();
   const state = useSelector((state: RootState) => state.dashboardUserData);
 
-  const [sorting, setSorting] = React.useState<SortingState>([]);
+  // Ensure the project edits are preserved across rerenders
+  const projectEditsRef = React.useRef<Partial<Project> | undefined>();
+  React.useEffect(() => {
+    projectEditsRef.current = state.projectEdits;
+  }, [state.projectEdits]);
+
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
@@ -48,28 +60,33 @@ export function ProjectsDataTable() {
 
   const tableCols = React.useMemo(() => {
     // Remove the descriptions col if the screen is too small
-    let cols = columns(dispatch, state);
+    let cols = columns({
+      onUpdateProject: onUpdateProject(state, dispatch, projectEditsRef),
+      onProjectEdit: onProjectEdit(dispatch),
+      onEditCancel: onEditCancel(dispatch, projectEditsRef),
+      onInputChange: onInputChange(dispatch, projectEditsRef),
+      updateStatus: updateStatus(dispatch),
+      isEditingRow: isEditingRow(state),
+    });
+
     if (isSmall) {
       const omittedCols = ["description", "select"];
       cols = cols.filter((col) => !omittedCols.includes(col.id ?? ""));
     }
 
     return cols;
-  }, [isSmall, state.editingProject]);
+  }, [isSmall, state.editingProjectId, state.userData]);
 
   const table = useReactTable<ProjectRow>({
     data: state.userData?.projects ?? [],
     columns: tableCols,
-    onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
 
     state: {
-      sorting,
       columnFilters,
       columnVisibility,
       rowSelection,

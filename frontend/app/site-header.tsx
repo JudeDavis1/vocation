@@ -35,7 +35,7 @@ export function SiteHeader() {
         </NavbarContent>
         <NavbarContent className="hidden sm:flex" justify="start">
           {rightMenuItems.map((item, i) => (
-            <Link href={item.href} key={i}>
+            <Link href={item.href} key={item.href}>
               {item.title}
             </Link>
           ))}
@@ -43,11 +43,9 @@ export function SiteHeader() {
 
         <NavbarMenu>
           <br />
-          {rightMenuItems.map((item, i) => (
-            <NavbarMenuItem>
-              <Link href={item.href} key={i}>
-                {item.title}
-              </Link>
+          {rightMenuItems.map((item) => (
+            <NavbarMenuItem key={item.href}>
+              <Link href={item.href}>{item.title}</Link>
             </NavbarMenuItem>
           ))}
         </NavbarMenu>

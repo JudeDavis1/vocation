@@ -2,18 +2,24 @@
 
 import axios from "axios";
 import { isEqual } from "lodash";
+import { Row } from "@tanstack/react-table";
 
 import { requestOptions } from "../request-options";
-import { AppDispatch } from "../stores/root";
+import { AppDispatch, RootState } from "../stores/root";
 import {
   DashboardUserDataState,
+  dashboardUserDataSlice,
   getUserDataThunk,
 } from "../stores/dashboard-user-data";
 import { backendErrorHandle } from "../backend-error-handle";
+import { createProjectSchema } from "../types/create-project/form-schema";
 
 import { backendRoutes } from "@/config";
-import { Project } from "@/lib/types/models/user";
+import { Project, ProjectStatus } from "@/lib/types/models/user";
 import { toast } from "@/components/ui/use-toast";
+
+const { updateUserProject, setEditingProjectId, setProjectEdits } =
+  dashboardUserDataSlice.actions;
 
 export async function updateProject(
   projectId: number,
@@ -97,4 +103,130 @@ export async function deleteBatchAndUpdate(
       variant: "destructive",
     });
   }
+}
+
+export function onUpdateProject(
+  state: RootState["dashboardUserData"],
+  dispatch: AppDispatch,
+  projectEditsRef: React.MutableRefObject<Partial<Project> | undefined>
+) {
+  console.log(projectEditsRef.current);
+  return async (row: Row<Project>) => {
+    if (
+      !state.editingProjectId ||
+      !projectEditsRef.current ||
+      !state.userData?.projects
+    ) {
+      return;
+    }
+
+    // Ensure the project matches the schema requirements
+    const originalProjectIdx = state.userData.projects.findIndex(
+      (p) => p.id === state.editingProjectId
+    );
+    if (originalProjectIdx === -1) {
+      console.log(originalProjectIdx);
+      return;
+    }
+
+    // Ensure the project matches the schema requirements
+    const parseResult = createProjectSchema.safeParse({
+      // Destruct the old project to ensure the fields are still there
+      ...state.userData.projects[originalProjectIdx],
+      // (this destructure will overwrite the old one...)
+      ...projectEditsRef.current,
+    });
+    if (!parseResult.success) {
+      toast({
+        title: "Error",
+        description: parseResult.error.errors[0].message,
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      await updateProject(
+        row.original.id,
+        projectEditsRef.current,
+        row.original,
+        dispatch
+      );
+      // Update client state
+      // dispatch(
+      //   updateUserProject({
+      //     projectId: row.original.id,
+      //     updates: { ...projectEditsRef.current },
+      //   })
+      // );
+      // Update user data store
+      dispatch(getUserDataThunk());
+
+      // Reset edit state
+      cleanupProjectEdits(dispatch, projectEditsRef);
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: backendErrorHandle(error),
+        variant: "destructive",
+      });
+    }
+  };
+}
+
+export function onProjectEdit(dispatch: AppDispatch) {
+  return async (row: Row<Project>) => {
+    console.log(row.original.id);
+    dispatch(setEditingProjectId(row.original.id));
+  };
+}
+
+export function onEditCancel(
+  dispatch: AppDispatch,
+  projectEditsRef: React.MutableRefObject<Partial<Project> | undefined>
+) {
+  return async () => {
+    cleanupProjectEdits(dispatch, projectEditsRef);
+  };
+}
+
+export function onInputChange(
+  dispatch: AppDispatch,
+  projectEditsRef: React.MutableRefObject<Partial<Project> | undefined>
+) {
+  return async (edits: Partial<Project>) => {
+    dispatch(
+      setProjectEdits({
+        ...projectEditsRef.current,
+        ...edits,
+      })
+    );
+  };
+}
+
+export function updateStatus(dispatch: AppDispatch) {
+  return async (
+    row: Row<Project>,
+    projectStatus: keyof typeof ProjectStatus
+  ) => {
+    await updateProject(
+      row.original.id,
+      { status: projectStatus },
+      row.original,
+      dispatch
+    );
+  };
+}
+
+export function isEditingRow(state: RootState["dashboardUserData"]) {
+  return (row: Row<Project>) => row.original.id === state.editingProjectId;
+}
+
+export function cleanupProjectEdits(
+  dispatch: AppDispatch,
+  projectEditsRef: React.MutableRefObject<Partial<Project> | undefined>
+) {
+  dispatch(setEditingProjectId(undefined));
+  dispatch(setProjectEdits(undefined));
+  projectEditsRef.current = undefined;
 }

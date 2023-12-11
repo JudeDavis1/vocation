@@ -1,9 +1,10 @@
 "use client";
 
+import React from "react";
 import { ColumnDef, Row } from "@tanstack/react-table";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
-import React from "react";
 import { Edit } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -17,7 +18,7 @@ import { Project, ProjectStatus } from "@/lib/types/models/user";
 import { backendErrorHandle } from "@/lib/backend-error-handle";
 import { toast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
-import { updateProject, deleteProject } from "@/lib/dashboard/table-actions";
+import { deleteProject } from "@/lib/dashboard/table-actions";
 import { DataTableColumnHeader } from "@/components/data-table/column-header";
 import {
   Tooltip,
@@ -25,20 +26,25 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { AppDispatch, RootState } from "@/lib/stores/root";
-import {
-  dashboardUserDataSlice,
-  getUserDataThunk,
-} from "@/lib/stores/dashboard-user-data";
+import { getUserDataThunk } from "@/lib/stores/dashboard-user-data";
 import { Input } from "@/components/ui/input";
-import { createProjectSchema } from "@/lib/types/create-project/form-schema";
 
 export type ProjectRow = Project;
 
-const { setEditingProject, updateUserProject } = dashboardUserDataSlice.actions;
+export interface ColumnCallbacks {
+  onUpdateProject: (row: Row<Project>) => Promise<void>;
+  onProjectEdit: (row: Row<Project>) => Promise<void>;
+  onEditCancel: () => Promise<void>;
+  onInputChange: (edits: Partial<Project>) => Promise<void>;
+  isEditingRow: (row: Row<Project>) => boolean;
+  updateStatus: (
+    row: Row<Project>,
+    projectStatus: keyof typeof ProjectStatus
+  ) => Promise<void>;
+}
 
 export const columns = (
-  dispatch: AppDispatch,
-  state: RootState["dashboardUserData"]
+  callbacks: ColumnCallbacks
 ): ColumnDef<ProjectRow>[] => [
   {
     id: "select",
@@ -64,9 +70,7 @@ export const columns = (
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Status" />
     ),
-    cell: ({ row }) => (
-      <StatusRow row={row} dispatch={dispatch} state={state} />
-    ),
+    cell: ({ row }) => <StatusRow row={row} callbacks={callbacks} />,
   },
   {
     accessorKey: "title",
@@ -74,10 +78,8 @@ export const columns = (
       <DataTableColumnHeader column={column} title="Title" />
     ),
     cell: ({ row }) => {
-      const isEditing = state.editingProject?.id === row.original.id;
-      const defaultValue = isEditing
-        ? state.editingProject?.title
-        : row.original.title;
+      const isEditing = callbacks.isEditingRow(row);
+      const defaultValue = row.original.title;
       return (
         <div className="text-xs">
           <Tooltip>
@@ -86,13 +88,8 @@ export const columns = (
                 className="capitalize line-clamp-2"
                 defaultValue={defaultValue}
                 disabled={!isEditing}
-                onBlur={(e) =>
-                  dispatch(
-                    setEditingProject({
-                      ...state.editingProject,
-                      title: e.target.value,
-                    })
-                  )
+                onChange={(e) =>
+                  callbacks.onInputChange({ title: e.target.value })
                 }
               />
             </TooltipTrigger>
@@ -109,10 +106,8 @@ export const columns = (
       <DataTableColumnHeader column={column} title="Description" />
     ),
     cell: ({ row }) => {
-      const isEditing = state.editingProject?.id === row.original.id;
-      const defaultValue = isEditing
-        ? state.editingProject?.description
-        : row.original.description;
+      const isEditing = callbacks.isEditingRow(row);
+      const defaultValue = row.original.description;
       return (
         <div className="text-xs">
           <Tooltip>
@@ -121,13 +116,10 @@ export const columns = (
                 className="capitalize line-clamp-2"
                 defaultValue={defaultValue}
                 disabled={!isEditing}
-                onBlur={(e) =>
-                  dispatch(
-                    setEditingProject({
-                      ...state.editingProject,
-                      description: e.target.value,
-                    })
-                  )
+                onChange={(e) =>
+                  callbacks.onInputChange({
+                    description: e.target.value,
+                  })
                 }
               />
             </TooltipTrigger>
@@ -142,19 +134,16 @@ export const columns = (
   {
     id: "actions",
     enableHiding: false,
-    cell: ({ row }) => (
-      <ActionsRow row={row} dispatch={dispatch} state={state} />
-    ),
+    cell: ({ row }) => <ActionsRow row={row} callbacks={callbacks} />,
   },
 ];
 
 interface RowProps {
   row: Row<Project>;
-  dispatch: AppDispatch;
-  state: RootState["dashboardUserData"];
+  callbacks: ColumnCallbacks;
 }
 
-function StatusRow({ row, dispatch }: RowProps) {
+function StatusRow({ row, callbacks }: RowProps) {
   const statusColorMap: Record<keyof typeof ProjectStatus, string> = {
     NOT_STARTED: "bg-gray-700",
     IN_PROGRESS: "bg-blue-500",
@@ -183,14 +172,7 @@ function StatusRow({ row, dispatch }: RowProps) {
       <DropdownMenuItem
         key={keyString}
         className="hover:cursor-pointer"
-        onClick={() =>
-          updateProject(
-            row.original.id,
-            { status: projectStatus },
-            row.original,
-            dispatch
-          )
-        }
+        onClick={() => callbacks.updateStatus(row, projectStatus)}
       >
         {statusWrapper(projectStatus)}
       </DropdownMenuItem>
@@ -212,7 +194,9 @@ function StatusRow({ row, dispatch }: RowProps) {
   );
 }
 
-function ActionsRow({ row, dispatch, state }: RowProps) {
+function ActionsRow({ row, callbacks }: RowProps) {
+  const dispatch: AppDispatch = useDispatch();
+  const state = useSelector((state: RootState) => state.dashboardUserData);
   const onDeleteProject = React.useCallback(async () => {
     try {
       await deleteProject(row.original);
@@ -231,60 +215,20 @@ function ActionsRow({ row, dispatch, state }: RowProps) {
     }
   }, [dispatch, row.original]);
 
-  const onUpdate = React.useCallback(async () => {
-    if (state.editingProject?.id === undefined) {
-      return;
-    }
-
-    // Ensure the project matches the schema requirements
-    const parseResult = createProjectSchema.safeParse(state.editingProject);
-    if (!parseResult.success) {
-      toast({
-        title: "Error",
-        description: parseResult.error.errors[0].message,
-        variant: "destructive",
-      });
-      return;
-    }
-
-    try {
-      await updateProject(
-        row.original.id,
-        state.editingProject,
-        row.original,
-        dispatch
-      );
-      // Update client state
-      dispatch(
-        updateUserProject({
-          projectId: row.original.id,
-          updates: { ...state.editingProject },
-        })
-      );
-      dispatch(setEditingProject(undefined));
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: backendErrorHandle(error),
-        variant: "destructive",
-      });
-    }
-  }, [dispatch]);
-
   return (
     <div>
-      {state.editingProject?.id !== undefined ? (
+      {state.editingProjectId !== undefined ? (
         <div className="flex gap-x-1">
           <Button
             className="text-xs"
-            onClick={() => dispatch(setEditingProject(undefined))}
+            onClick={callbacks.onEditCancel}
             size="sm"
             variant="ghost"
           >
             Cancel
           </Button>
           <Button
-            onClick={onUpdate}
+            onClick={() => callbacks.onUpdateProject(row)}
             size="sm"
             variant="outline"
             className="text-xs"
@@ -301,9 +245,7 @@ function ActionsRow({ row, dispatch, state }: RowProps) {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start">
-            <DropdownMenuItem
-              onClick={(e) => dispatch(setEditingProject(row.original))}
-            >
+            <DropdownMenuItem onClick={(e) => callbacks.onProjectEdit(row)}>
               <div className="flex justify-between items-center w-full">
                 <span>Edit</span>
                 <Edit size={14} />
