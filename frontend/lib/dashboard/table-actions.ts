@@ -18,8 +18,7 @@ import { backendRoutes } from "@/config";
 import { Project, ProjectStatus } from "@/lib/types/models/user";
 import { toast } from "@/components/ui/use-toast";
 
-const { updateUserProject, setEditingProjectId, setProjectEdits } =
-  dashboardUserDataSlice.actions;
+const { setEditingProjectId, setProjectEdits } = dashboardUserDataSlice.actions;
 
 export async function updateProject(
   projectId: number,
