@@ -155,13 +155,6 @@ export function onUpdateProject(
         row.original,
         dispatch
       );
-      // Update client state
-      // dispatch(
-      //   updateUserProject({
-      //     projectId: row.original.id,
-      //     updates: { ...projectEditsRef.current },
-      //   })
-      // );
       // Update user data store
       dispatch(getUserDataThunk());
 
@@ -179,7 +172,6 @@ export function onUpdateProject(
 
 export function onProjectEdit(dispatch: AppDispatch) {
   return async (row: Row<Project>) => {
-    console.log(row.original.id);
     dispatch(setEditingProjectId(row.original.id));
   };
 }
