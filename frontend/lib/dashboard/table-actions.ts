@@ -109,13 +109,14 @@ export function onUpdateProject(
   dispatch: AppDispatch,
   projectEditsRef: React.MutableRefObject<Partial<Project> | undefined>
 ) {
-  console.log(projectEditsRef.current);
   return async (row: Row<Project>) => {
     if (
       !state.editingProjectId ||
       !projectEditsRef.current ||
       !state.userData?.projects
     ) {
+      // Reset edit state
+      cleanupProjectEdits(dispatch, projectEditsRef);
       return;
     }
 
