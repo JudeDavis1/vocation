@@ -3,10 +3,12 @@
 import React from "react";
 import {
   ColumnFiltersState,
+  SortingState,
   VisibilityState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
+  getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 import { Loader } from "lucide-react";
@@ -57,6 +59,7 @@ export function ProjectsDataTable() {
   const [rowSelection, setRowSelection] = React.useState<
     Record<number, boolean>
   >({});
+  const [sorting, setSorting] = React.useState<SortingState>([]);
 
   const tableCols = React.useMemo(() => {
     // Remove the descriptions col if the screen is too small
@@ -83,10 +86,13 @@ export function ProjectsDataTable() {
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
 
     state: {
+      sorting,
       columnFilters,
       columnVisibility,
       rowSelection,
@@ -105,7 +111,10 @@ export function ProjectsDataTable() {
           className="max-w-sm"
         />
         {Object.keys(rowSelection).length ? (
-          <RowDeleteButton rowSelection={rowSelection} />
+          <RowDeleteButton
+            rowSelection={rowSelection}
+            setRowSelection={setRowSelection}
+          />
         ) : (
           <></>
         )}
@@ -169,16 +178,24 @@ export function ProjectsDataTable() {
 
 interface RowDeleteButton {
   rowSelection: Record<number, boolean>;
+  setRowSelection: React.Dispatch<
+    React.SetStateAction<Record<number, boolean>>
+  >;
 }
 
-function RowDeleteButton({ rowSelection }: RowDeleteButton) {
+function RowDeleteButton({ rowSelection, setRowSelection }: RowDeleteButton) {
   const dispatch: AppDispatch = useDispatch();
   const state = useSelector((state: RootState) => state.dashboardUserData);
 
   return (
     <Button
       variant="destructive"
-      onClick={() => deleteBatchAndUpdate(state, rowSelection, dispatch)}
+      onClick={() => {
+        // Update and reset row selection
+        deleteBatchAndUpdate(state, rowSelection, dispatch).then(() =>
+          setRowSelection({})
+        );
+      }}
     >
       Delete
     </Button>

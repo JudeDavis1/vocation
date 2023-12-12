@@ -217,7 +217,7 @@ function ActionsRow({ row, callbacks }: RowProps) {
 
   return (
     <div>
-      {state.editingProjectId !== undefined ? (
+      {state.editingProjectId === row.original.id ? (
         <div className="flex gap-x-1">
           <Button
             className="text-xs"
