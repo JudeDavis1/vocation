@@ -3,10 +3,12 @@
 import React from "react";
 import {
   ColumnFiltersState,
+  SortingState,
   VisibilityState,
   flexRender,
   getCoreRowModel,
   getFilteredRowModel,
+  getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 import { Loader } from "lucide-react";
@@ -57,6 +59,7 @@ export function ProjectsDataTable() {
   const [rowSelection, setRowSelection] = React.useState<
     Record<number, boolean>
   >({});
+  const [sorting, setSorting] = React.useState<SortingState>([]);
 
   const tableCols = React.useMemo(() => {
     // Remove the descriptions col if the screen is too small
@@ -83,10 +86,13 @@ export function ProjectsDataTable() {
     onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
 
     state: {
+      sorting,
       columnFilters,
       columnVisibility,
       rowSelection,
