@@ -111,7 +111,10 @@ export function ProjectsDataTable() {
           className="max-w-sm"
         />
         {Object.keys(rowSelection).length ? (
-          <RowDeleteButton rowSelection={rowSelection} />
+          <RowDeleteButton
+            rowSelection={rowSelection}
+            setRowSelection={setRowSelection}
+          />
         ) : (
           <></>
         )}
@@ -175,16 +178,24 @@ export function ProjectsDataTable() {
 
 interface RowDeleteButton {
   rowSelection: Record<number, boolean>;
+  setRowSelection: React.Dispatch<
+    React.SetStateAction<Record<number, boolean>>
+  >;
 }
 
-function RowDeleteButton({ rowSelection }: RowDeleteButton) {
+function RowDeleteButton({ rowSelection, setRowSelection }: RowDeleteButton) {
   const dispatch: AppDispatch = useDispatch();
   const state = useSelector((state: RootState) => state.dashboardUserData);
 
   return (
     <Button
       variant="destructive"
-      onClick={() => deleteBatchAndUpdate(state, rowSelection, dispatch)}
+      onClick={() => {
+        // Update and reset row selection
+        deleteBatchAndUpdate(state, rowSelection, dispatch).then(() =>
+          setRowSelection({})
+        );
+      }}
     >
       Delete
     </Button>
