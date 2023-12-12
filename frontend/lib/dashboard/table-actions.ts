@@ -124,7 +124,11 @@ export function onUpdateProject(
       (p) => p.id === state.editingProjectId
     );
     if (originalProjectIdx === -1) {
-      console.log(originalProjectIdx);
+      toast({
+        title: "Error",
+        description: "Could not find project. Please try refreshing the page.",
+        variant: "destructive",
+      });
       return;
     }
 
