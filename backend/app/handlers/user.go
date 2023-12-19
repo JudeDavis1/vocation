@@ -7,6 +7,7 @@ import (
 	"backend/app/services/security"
 	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/mitchellh/mapstructure"
@@ -120,6 +121,7 @@ func LoginUser(ctx *gin.Context) {
 		HttpOnly: true,
 		Secure:   true,
 		SameSite: http.SameSiteNoneMode,
+		Domain:   os.Getenv("DOMAIN"),
 	}
 
 	http.SetCookie(ctx.Writer, cookie)
