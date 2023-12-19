@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/mitchellh/mapstructure"
@@ -122,6 +123,7 @@ func LoginUser(ctx *gin.Context) {
 		Secure:   true,
 		SameSite: http.SameSiteNoneMode,
 		Domain:   os.Getenv("DOMAIN"),
+		Expires:  time.Now().Add(24 * time.Hour),
 	}
 
 	http.SetCookie(ctx.Writer, cookie)
