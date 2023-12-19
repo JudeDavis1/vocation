@@ -20,7 +20,7 @@ export async function submitLoginData(
       withCredentials: true,
     });
     const responseData = response.data as LoginResponse;
-    // localStorage.setItem("sessionToken", responseData.sessionToken);
+    sessionStorage.setItem("sessionToken", responseData.sessionToken);
 
     toast({
       title: "Success!",

@@ -9,7 +9,7 @@ export async function submitProjectData(
   data: CreateProjectInput,
   userId: string
 ) {
-  const sessionToken = localStorage.getItem("sessionToken");
+  const sessionToken = sessionStorage.getItem("sessionToken");
   try {
     await axios.post(
       backendRoutes.project.create,
