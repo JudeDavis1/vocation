@@ -58,6 +58,7 @@ function CreateProjectPopover() {
       if (state.userData) {
         await submitProjectData(data, String(state.userData.id));
       }
+
       dispatch(getUserDataThunk());
       setIsOpen(false);
     },
