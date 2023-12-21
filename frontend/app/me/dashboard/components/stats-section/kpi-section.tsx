@@ -37,7 +37,7 @@ export function KpiSection() {
     <div className="sm:p-8 p-4 space-y-4">
       <h1 className="text-2xl">KPIs for this week</h1>
 
-      <div className="sm:flex gap-x-16 space-y-6 sm:space-y-0">
+      <div className="flex gap-x-4 sm:gap-x-8">
         <ProgressItem
           value={projectsSummary.completed}
           color="success"

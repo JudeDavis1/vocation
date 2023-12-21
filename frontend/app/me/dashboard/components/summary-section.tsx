@@ -72,7 +72,7 @@ function CreateProjectPopover() {
           <Plus />
         </Button>
       </PopoverTrigger>
-      <PopoverContent align="start" className="p-0 sm:w-auto w-full">
+      <PopoverContent align="start" className="p-0 sm:w-96 w-screen">
         <CreateProjectForm onSubmit={onSubmit} />
       </PopoverContent>
     </Popover>
