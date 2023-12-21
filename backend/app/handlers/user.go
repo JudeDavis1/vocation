@@ -19,8 +19,6 @@ func GetUser(ctx *gin.Context) {
 	db := ctx.MustGet("db").(*gorm.DB)
 	sessionToken := ctx.MustGet("sessionToken").(*security.SessionTokenPayload)
 
-	fmt.Println(sessionToken.UserId)
-
 	var user models.User
 	result := db.Preload("Projects").First(&user, sessionToken.UserId)
 	if result.Error != nil {
@@ -36,8 +34,6 @@ func GetUser(ctx *gin.Context) {
 		fmt.Println(err)
 		return
 	}
-
-	fmt.Println(user.Projects)
 
 	ctx.JSON(http.StatusOK, responseDto)
 }
